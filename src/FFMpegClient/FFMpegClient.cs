@@ -46,7 +46,7 @@ namespace DR.FFMpegClient
     
         /// <returns>OK</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public Task<object> GetAsync(string machineName)
+        public Task<AudioTranscodingJob> GetAsync(string machineName)
         {
             return GetAsync(machineName, CancellationToken.None);
         }
@@ -54,7 +54,7 @@ namespace DR.FFMpegClient
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async Task<object> GetAsync(string machineName, CancellationToken cancellationToken)
+        public async Task<AudioTranscodingJob> GetAsync(string machineName, CancellationToken cancellationToken)
         {
             var url_ = string.Format("{0}/{1}?", BaseUrl, "api/AudioJob");
     
@@ -73,11 +73,11 @@ namespace DR.FFMpegClient
     
             if (status_ == "200") 
             {
-                var result_ = default(object); 
+                var result_ = default(AudioTranscodingJob); 
                 try
                 {
                     if (responseData_.Length > 0)
-                        result_ = JsonConvert.DeserializeObject<object>(Encoding.UTF8.GetString(responseData_));                                
+                        result_ = JsonConvert.DeserializeObject<AudioTranscodingJob>(Encoding.UTF8.GetString(responseData_));                                
                     return result_; 
                 } 
                 catch (Exception exception) 
@@ -94,7 +94,7 @@ namespace DR.FFMpegClient
     
         /// <returns>OK</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public Task<object> PostAsync(AudioJobRequestModel input)
+        public Task<string> PostAsync(AudioJobRequestModel input)
         {
             return PostAsync(input, CancellationToken.None);
         }
@@ -102,7 +102,7 @@ namespace DR.FFMpegClient
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async Task<object> PostAsync(AudioJobRequestModel input, CancellationToken cancellationToken)
+        public async Task<string> PostAsync(AudioJobRequestModel input, CancellationToken cancellationToken)
         {
             var url_ = string.Format("{0}/{1}?", BaseUrl, "api/AudioJob");
     
@@ -121,11 +121,11 @@ namespace DR.FFMpegClient
     
             if (status_ == "200") 
             {
-                var result_ = default(object); 
+                var result_ = default(string); 
                 try
                 {
                     if (responseData_.Length > 0)
-                        result_ = JsonConvert.DeserializeObject<object>(Encoding.UTF8.GetString(responseData_));                                
+                        result_ = JsonConvert.DeserializeObject<string>(Encoding.UTF8.GetString(responseData_));                                
                     return result_; 
                 } 
                 catch (Exception exception) 
@@ -140,17 +140,17 @@ namespace DR.FFMpegClient
             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", status_, responseData_, null);
         }
     
-        /// <returns>OK</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public Task<object> DeleteAsync(string jobId)
+        public Task DeleteAsync(string jobId)
         {
             return DeleteAsync(jobId, CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>OK</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async Task<object> DeleteAsync(string jobId, CancellationToken cancellationToken)
+        public async Task DeleteAsync(string jobId, CancellationToken cancellationToken)
         {
             var url_ = string.Format("{0}/{1}?", BaseUrl, "api/AudioJob");
     
@@ -167,19 +167,10 @@ namespace DR.FFMpegClient
             var responseData_ = await response_.Content.ReadAsByteArrayAsync().ConfigureAwait(false); 
             var status_ = ((int)response_.StatusCode).ToString();
     
-            if (status_ == "200") 
+            if (status_ == "204") 
             {
-                var result_ = default(object); 
-                try
-                {
-                    if (responseData_.Length > 0)
-                        result_ = JsonConvert.DeserializeObject<object>(Encoding.UTF8.GetString(responseData_));                                
-                    return result_; 
-                } 
-                catch (Exception exception) 
-                {
-                    throw new SwaggerException("Could not deserialize the response body.", status_, responseData_, exception);
-                }
+                return;     
+     
             }
             else
             {
@@ -395,15 +386,15 @@ namespace DR.FFMpegClient
     
         /// <returns>OK</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public Task<object> GetAsync()
+        public Task<ObservableCollection<JobRequestModel>> GetAllAsync()
         {
-            return GetAsync(CancellationToken.None);
+            return GetAllAsync(CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async Task<object> GetAsync(CancellationToken cancellationToken)
+        public async Task<ObservableCollection<JobRequestModel>> GetAllAsync(CancellationToken cancellationToken)
         {
             var url_ = string.Format("{0}/{1}?", BaseUrl, "api/Status");
     
@@ -419,11 +410,11 @@ namespace DR.FFMpegClient
     
             if (status_ == "200") 
             {
-                var result_ = default(object); 
+                var result_ = default(ObservableCollection<JobRequestModel>); 
                 try
                 {
                     if (responseData_.Length > 0)
-                        result_ = JsonConvert.DeserializeObject<object>(Encoding.UTF8.GetString(responseData_));                                
+                        result_ = JsonConvert.DeserializeObject<ObservableCollection<JobRequestModel>>(Encoding.UTF8.GetString(responseData_));                                
                     return result_; 
                 } 
                 catch (Exception exception) 
@@ -479,7 +470,7 @@ namespace DR.FFMpegClient
     
         /// <returns>OK</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public Task<object> GetAsync(string id)
+        public Task<JobRequestModel> GetAsync(string id)
         {
             return GetAsync(id, CancellationToken.None);
         }
@@ -487,7 +478,7 @@ namespace DR.FFMpegClient
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async Task<object> GetAsync(string id, CancellationToken cancellationToken)
+        public async Task<JobRequestModel> GetAsync(string id, CancellationToken cancellationToken)
         {
             var url_ = string.Format("{0}/{1}?", BaseUrl, "api/Status/{id}");
             if (id == null)
@@ -507,11 +498,11 @@ namespace DR.FFMpegClient
     
             if (status_ == "200") 
             {
-                var result_ = default(object); 
+                var result_ = default(JobRequestModel); 
                 try
                 {
                     if (responseData_.Length > 0)
-                        result_ = JsonConvert.DeserializeObject<object>(Encoding.UTF8.GetString(responseData_));                                
+                        result_ = JsonConvert.DeserializeObject<JobRequestModel>(Encoding.UTF8.GetString(responseData_));                                
                     return result_; 
                 } 
                 catch (Exception exception) 
@@ -530,6 +521,198 @@ namespace DR.FFMpegClient
     
     
 
+    [JsonObject(MemberSerialization.OptIn)]
+    [GeneratedCode("NJsonSchema", "2.62.6049.40362")]
+    public partial class AudioTranscodingJob : INotifyPropertyChanged
+    { 
+        private string _arguments; 
+        private DateTime? _needed; 
+        private Type2 _type; 
+        private string _jobCorrelationId; 
+        private string _machineName; 
+        private string _progress; 
+        private bool? _done; 
+        private int? _id; 
+        private bool? _failed; 
+        private State _state; 
+        private string _sourceFilename;
+    
+        [JsonProperty("Arguments", Required = Required.Default)]
+        public string Arguments
+        {
+            get { return _arguments; }
+            set 
+            {
+                if (_arguments != value)
+                {
+                    _arguments = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("Needed", Required = Required.Default)]
+        public DateTime? Needed
+        {
+            get { return _needed; }
+            set 
+            {
+                if (_needed != value)
+                {
+                    _needed = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("Type", Required = Required.Default)]
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Type2 Type
+        {
+            get { return _type; }
+            set 
+            {
+                if (_type != value)
+                {
+                    _type = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("JobCorrelationId", Required = Required.Default)]
+        public string JobCorrelationId
+        {
+            get { return _jobCorrelationId; }
+            set 
+            {
+                if (_jobCorrelationId != value)
+                {
+                    _jobCorrelationId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("MachineName", Required = Required.Default)]
+        public string MachineName
+        {
+            get { return _machineName; }
+            set 
+            {
+                if (_machineName != value)
+                {
+                    _machineName = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("Progress", Required = Required.Default)]
+        public string Progress
+        {
+            get { return _progress; }
+            set 
+            {
+                if (_progress != value)
+                {
+                    _progress = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("Done", Required = Required.Default)]
+        public bool? Done
+        {
+            get { return _done; }
+            set 
+            {
+                if (_done != value)
+                {
+                    _done = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("Id", Required = Required.Default)]
+        public int? Id
+        {
+            get { return _id; }
+            set 
+            {
+                if (_id != value)
+                {
+                    _id = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("Failed", Required = Required.Default)]
+        public bool? Failed
+        {
+            get { return _failed; }
+            set 
+            {
+                if (_failed != value)
+                {
+                    _failed = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("State", Required = Required.Default)]
+        [JsonConverter(typeof(StringEnumConverter))]
+        public State State
+        {
+            get { return _state; }
+            set 
+            {
+                if (_state != value)
+                {
+                    _state = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("SourceFilename", Required = Required.Default)]
+        public string SourceFilename
+        {
+            get { return _sourceFilename; }
+            set 
+            {
+                if (_sourceFilename != value)
+                {
+                    _sourceFilename = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public event PropertyChangedEventHandler PropertyChanged;
+    
+        public string ToJson() 
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        
+        public static AudioTranscodingJob FromJson(string data)
+        {
+            return JsonConvert.DeserializeObject<AudioTranscodingJob>(data);
+        }
+        
+        protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+    
     [JsonObject(MemberSerialization.OptIn)]
     [GeneratedCode("NJsonSchema", "2.62.6049.40362")]
     public partial class AudioJobRequestModel : INotifyPropertyChanged
@@ -778,6 +961,268 @@ namespace DR.FFMpegClient
     
     [JsonObject(MemberSerialization.OptIn)]
     [GeneratedCode("NJsonSchema", "2.62.6049.40362")]
+    public partial class JobRequestModel : INotifyPropertyChanged
+    { 
+        private string _jobCorrelationId; 
+        private State3 _state; 
+        private DateTime? _created; 
+        private DateTime? _needed; 
+        private string _sourceFilename; 
+        private string _destinationFilenamePrefix; 
+        private string _outputFolder; 
+        private ObservableCollection<TranscodingJobModel> _jobs;
+    
+        [JsonProperty("JobCorrelationId", Required = Required.Default)]
+        public string JobCorrelationId
+        {
+            get { return _jobCorrelationId; }
+            set 
+            {
+                if (_jobCorrelationId != value)
+                {
+                    _jobCorrelationId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("State", Required = Required.Default)]
+        [JsonConverter(typeof(StringEnumConverter))]
+        public State3 State
+        {
+            get { return _state; }
+            set 
+            {
+                if (_state != value)
+                {
+                    _state = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("Created", Required = Required.Default)]
+        public DateTime? Created
+        {
+            get { return _created; }
+            set 
+            {
+                if (_created != value)
+                {
+                    _created = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("Needed", Required = Required.Default)]
+        public DateTime? Needed
+        {
+            get { return _needed; }
+            set 
+            {
+                if (_needed != value)
+                {
+                    _needed = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("SourceFilename", Required = Required.Default)]
+        public string SourceFilename
+        {
+            get { return _sourceFilename; }
+            set 
+            {
+                if (_sourceFilename != value)
+                {
+                    _sourceFilename = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("DestinationFilenamePrefix", Required = Required.Default)]
+        public string DestinationFilenamePrefix
+        {
+            get { return _destinationFilenamePrefix; }
+            set 
+            {
+                if (_destinationFilenamePrefix != value)
+                {
+                    _destinationFilenamePrefix = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("OutputFolder", Required = Required.Default)]
+        public string OutputFolder
+        {
+            get { return _outputFolder; }
+            set 
+            {
+                if (_outputFolder != value)
+                {
+                    _outputFolder = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("Jobs", Required = Required.Default)]
+        public ObservableCollection<TranscodingJobModel> Jobs
+        {
+            get { return _jobs; }
+            set 
+            {
+                if (_jobs != value)
+                {
+                    _jobs = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public event PropertyChangedEventHandler PropertyChanged;
+    
+        public string ToJson() 
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        
+        public static JobRequestModel FromJson(string data)
+        {
+            return JsonConvert.DeserializeObject<JobRequestModel>(data);
+        }
+        
+        protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+    
+    [JsonObject(MemberSerialization.OptIn)]
+    [GeneratedCode("NJsonSchema", "2.62.6049.40362")]
+    public partial class TranscodingJobModel : INotifyPropertyChanged
+    { 
+        private double? _progress; 
+        private string _heartbeatMachine; 
+        private DateTime? _heartbeat; 
+        private State4 _state; 
+        private DateTime? _needed; 
+        private int? _chunkDuration;
+    
+        [JsonProperty("Progress", Required = Required.Default)]
+        public double? Progress
+        {
+            get { return _progress; }
+            set 
+            {
+                if (_progress != value)
+                {
+                    _progress = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("HeartbeatMachine", Required = Required.Default)]
+        public string HeartbeatMachine
+        {
+            get { return _heartbeatMachine; }
+            set 
+            {
+                if (_heartbeatMachine != value)
+                {
+                    _heartbeatMachine = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("Heartbeat", Required = Required.Default)]
+        public DateTime? Heartbeat
+        {
+            get { return _heartbeat; }
+            set 
+            {
+                if (_heartbeat != value)
+                {
+                    _heartbeat = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("State", Required = Required.Default)]
+        [JsonConverter(typeof(StringEnumConverter))]
+        public State4 State
+        {
+            get { return _state; }
+            set 
+            {
+                if (_state != value)
+                {
+                    _state = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("Needed", Required = Required.Default)]
+        public DateTime? Needed
+        {
+            get { return _needed; }
+            set 
+            {
+                if (_needed != value)
+                {
+                    _needed = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("ChunkDuration", Required = Required.Default)]
+        public int? ChunkDuration
+        {
+            get { return _chunkDuration; }
+            set 
+            {
+                if (_chunkDuration != value)
+                {
+                    _chunkDuration = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public event PropertyChangedEventHandler PropertyChanged;
+    
+        public string ToJson() 
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        
+        public static TranscodingJobModel FromJson(string data)
+        {
+            return JsonConvert.DeserializeObject<TranscodingJobModel>(data);
+        }
+        
+        protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+    
+    [JsonObject(MemberSerialization.OptIn)]
+    [GeneratedCode("NJsonSchema", "2.62.6049.40362")]
     public partial class BaseJob : INotifyPropertyChanged
     { 
         private string _jobCorrelationId; 
@@ -786,9 +1231,9 @@ namespace DR.FFMpegClient
         private bool? _done; 
         private int? _id; 
         private bool? _failed; 
-        private State _state; 
+        private State5 _state; 
         private string _sourceFilename; 
-        private Type2 _type;
+        private Type6 _type;
     
         [JsonProperty("JobCorrelationId", Required = Required.Default)]
         public string JobCorrelationId
@@ -876,7 +1321,7 @@ namespace DR.FFMpegClient
     
         [JsonProperty("State", Required = Required.Default)]
         [JsonConverter(typeof(StringEnumConverter))]
-        public State State
+        public State5 State
         {
             get { return _state; }
             set 
@@ -905,7 +1350,7 @@ namespace DR.FFMpegClient
     
         [JsonProperty("Type", Required = Required.Default)]
         [JsonConverter(typeof(StringEnumConverter))]
-        public Type2 Type
+        public Type6 Type
         {
             get { return _type; }
             set 
@@ -979,6 +1424,49 @@ namespace DR.FFMpegClient
     }
     
     [GeneratedCode("NJsonSchema", "2.62.6049.40362")]
+    public enum Type2
+    {
+        [EnumMember(Value = "Unknown")]
+        Unknown = 0,
+    
+        [EnumMember(Value = "Audio")]
+        Audio = 1,
+    
+        [EnumMember(Value = "Video")]
+        Video = 2,
+    
+        [EnumMember(Value = "VideoMp4box")]
+        VideoMp4box = 3,
+    
+        [EnumMember(Value = "VideoMerge")]
+        VideoMerge = 4,
+    
+    }
+    
+    [GeneratedCode("NJsonSchema", "2.62.6049.40362")]
+    public enum State
+    {
+        [EnumMember(Value = "Unknown")]
+        Unknown = 0,
+    
+        [EnumMember(Value = "Queued")]
+        Queued = 1,
+    
+        [EnumMember(Value = "Paused")]
+        Paused = 2,
+    
+        [EnumMember(Value = "InProgress")]
+        InProgress = 3,
+    
+        [EnumMember(Value = "Done")]
+        Done = 4,
+    
+        [EnumMember(Value = "Failed")]
+        Failed = 5,
+    
+    }
+    
+    [GeneratedCode("NJsonSchema", "2.62.6049.40362")]
     public enum AudioCodec
     {
         [EnumMember(Value = "Unknown")]
@@ -1013,7 +1501,7 @@ namespace DR.FFMpegClient
     }
     
     [GeneratedCode("NJsonSchema", "2.62.6049.40362")]
-    public enum State
+    public enum State3
     {
         [EnumMember(Value = "Unknown")]
         Unknown = 0,
@@ -1036,7 +1524,53 @@ namespace DR.FFMpegClient
     }
     
     [GeneratedCode("NJsonSchema", "2.62.6049.40362")]
-    public enum Type2
+    public enum State4
+    {
+        [EnumMember(Value = "Unknown")]
+        Unknown = 0,
+    
+        [EnumMember(Value = "Queued")]
+        Queued = 1,
+    
+        [EnumMember(Value = "Paused")]
+        Paused = 2,
+    
+        [EnumMember(Value = "InProgress")]
+        InProgress = 3,
+    
+        [EnumMember(Value = "Done")]
+        Done = 4,
+    
+        [EnumMember(Value = "Failed")]
+        Failed = 5,
+    
+    }
+    
+    [GeneratedCode("NJsonSchema", "2.62.6049.40362")]
+    public enum State5
+    {
+        [EnumMember(Value = "Unknown")]
+        Unknown = 0,
+    
+        [EnumMember(Value = "Queued")]
+        Queued = 1,
+    
+        [EnumMember(Value = "Paused")]
+        Paused = 2,
+    
+        [EnumMember(Value = "InProgress")]
+        InProgress = 3,
+    
+        [EnumMember(Value = "Done")]
+        Done = 4,
+    
+        [EnumMember(Value = "Failed")]
+        Failed = 5,
+    
+    }
+    
+    [GeneratedCode("NJsonSchema", "2.62.6049.40362")]
+    public enum Type6
     {
         [EnumMember(Value = "Unknown")]
         Unknown = 0,
