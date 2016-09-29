@@ -4,6 +4,8 @@
 // </auto-generated>
 //----------------------
 
+//I have tried to keep State enumeration duplicates away by removing them manually... -drexkrha
+
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -92,6 +94,7 @@ namespace DR.FFMpegClient
             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", status_, responseData_, null);
         }
     
+        /// <summary>Create a new job</summary>
         /// <returns>OK</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public Task<string> PostAsync(AudioJobRequestModel input)
@@ -99,6 +102,7 @@ namespace DR.FFMpegClient
             return PostAsync(input, CancellationToken.None);
         }
     
+        /// <summary>Create a new job</summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -140,6 +144,8 @@ namespace DR.FFMpegClient
             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", status_, responseData_, null);
         }
     
+        /// <summary>Delete a job</summary>
+        /// <param name="jobId">Job id returned when creating new job</param>
         /// <returns>No Content</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public Task DeleteAsync(string jobId)
@@ -147,6 +153,8 @@ namespace DR.FFMpegClient
             return DeleteAsync(jobId, CancellationToken.None);
         }
     
+        /// <summary>Delete a job</summary>
+        /// <param name="jobId">Job id returned when creating new job</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>No Content</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -260,6 +268,8 @@ namespace DR.FFMpegClient
     
         public string BaseUrl { get; set; }
     
+        /// <summary>Pause a job</summary>
+        /// <param name="jobId">Job id</param>
         /// <returns>No Content</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public Task PauseAsync(string jobId, Type type)
@@ -267,6 +277,8 @@ namespace DR.FFMpegClient
             return PauseAsync(jobId, type, CancellationToken.None);
         }
     
+        /// <summary>Pause a job</summary>
+        /// <param name="jobId">Job id</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>No Content</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -322,6 +334,8 @@ namespace DR.FFMpegClient
     
         public string BaseUrl { get; set; }
     
+        /// <summary>Resume a job</summary>
+        /// <param name="jobId">Job id</param>
         /// <returns>No Content</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public Task ResumeAsync(string jobId, Type1 type)
@@ -329,6 +343,8 @@ namespace DR.FFMpegClient
             return ResumeAsync(jobId, type, CancellationToken.None);
         }
     
+        /// <summary>Resume a job</summary>
+        /// <param name="jobId">Job id</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>No Content</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -384,6 +400,7 @@ namespace DR.FFMpegClient
     
         public string BaseUrl { get; set; }
     
+        /// <summary>Get status for all jobs</summary>
         /// <returns>OK</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public Task<ObservableCollection<JobRequestModel>> GetAllAsync()
@@ -391,6 +408,7 @@ namespace DR.FFMpegClient
             return GetAllAsync(CancellationToken.None);
         }
     
+        /// <summary>Get status for all jobs</summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -429,17 +447,25 @@ namespace DR.FFMpegClient
             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", status_, responseData_, null);
         }
     
+        /// <summary>Update progress of an active job.
+        /// 
+        /// This also serves as a heartbeat, to tell the server
+        /// that the client is still working actively on the job</summary>
         /// <returns>No Content</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public Task PutAsync(BaseJob job)
+        public Task UpdateProgressAsync(BaseJob job)
         {
-            return PutAsync(job, CancellationToken.None);
+            return UpdateProgressAsync(job, CancellationToken.None);
         }
     
+        /// <summary>Update progress of an active job.
+        /// 
+        /// This also serves as a heartbeat, to tell the server
+        /// that the client is still working actively on the job</summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>No Content</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async Task PutAsync(BaseJob job, CancellationToken cancellationToken)
+        public async Task UpdateProgressAsync(BaseJob job, CancellationToken cancellationToken)
         {
             var url_ = string.Format("{0}/{1}?", BaseUrl, "api/Status");
     
@@ -468,6 +494,8 @@ namespace DR.FFMpegClient
             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", status_, responseData_, null);
         }
     
+        /// <summary>Get status for a specific job</summary>
+        /// <param name="id">ID of job to get status of</param>
         /// <returns>OK</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public Task<JobRequestModel> GetAsync(string id)
@@ -475,6 +503,8 @@ namespace DR.FFMpegClient
             return GetAsync(id, CancellationToken.None);
         }
     
+        /// <summary>Get status for a specific job</summary>
+        /// <param name="id">ID of job to get status of</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -580,6 +610,7 @@ namespace DR.FFMpegClient
             }
         }
     
+        /// <summary>Job id</summary>
         [JsonProperty("JobCorrelationId", Required = Required.Default)]
         public string JobCorrelationId
         {
@@ -594,6 +625,7 @@ namespace DR.FFMpegClient
             }
         }
     
+        /// <summary>Client machine name. Used when reporting progress updates</summary>
         [JsonProperty("MachineName", Required = Required.Default)]
         public string MachineName
         {
@@ -608,6 +640,8 @@ namespace DR.FFMpegClient
             }
         }
     
+        /// <summary>Progress of how many seconds has been encoded
+        /// Used when reporting progress updates</summary>
         [JsonProperty("Progress", Required = Required.Default)]
         public string Progress
         {
@@ -622,6 +656,7 @@ namespace DR.FFMpegClient
             }
         }
     
+        /// <summary>Whether this job is done</summary>
         [JsonProperty("Done", Required = Required.Default)]
         public bool? Done
         {
@@ -679,6 +714,7 @@ namespace DR.FFMpegClient
             }
         }
     
+        /// <summary>Source filename</summary>
         [JsonProperty("SourceFilename", Required = Required.Default)]
         public string SourceFilename
         {
@@ -838,7 +874,8 @@ namespace DR.FFMpegClient
     { 
         private AudioCodec _audioCodec; 
         private Format _format; 
-        private int? _bitrate;
+        private int? _bitrate; 
+        private Channels _channels;
     
         [JsonProperty("AudioCodec", Required = Required.Default)]
         [JsonConverter(typeof(StringEnumConverter))]
@@ -879,6 +916,21 @@ namespace DR.FFMpegClient
                 if (_bitrate != value)
                 {
                     _bitrate = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("Channels", Required = Required.Default)]
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Channels Channels
+        {
+            get { return _channels; }
+            set 
+            {
+                if (_channels != value)
+                {
+                    _channels = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -964,7 +1016,7 @@ namespace DR.FFMpegClient
     public partial class JobRequestModel : INotifyPropertyChanged
     { 
         private string _jobCorrelationId; 
-        private State3 _state; 
+        private State _state; 
         private DateTime? _created; 
         private DateTime? _needed; 
         private string _sourceFilename; 
@@ -985,22 +1037,22 @@ namespace DR.FFMpegClient
                 }
             }
         }
-    
+
         [JsonProperty("State", Required = Required.Default)]
         [JsonConverter(typeof(StringEnumConverter))]
-        public State3 State
+        public State State
         {
             get { return _state; }
-            set 
+            set
             {
                 if (_state != value)
                 {
-                    _state = value; 
+                    _state = value;
                     RaisePropertyChanged();
                 }
             }
         }
-    
+
         [JsonProperty("Created", Required = Required.Default)]
         public DateTime? Created
         {
@@ -1112,7 +1164,7 @@ namespace DR.FFMpegClient
         private double? _progress; 
         private string _heartbeatMachine; 
         private DateTime? _heartbeat; 
-        private State4 _state; 
+        private State _state; 
         private DateTime? _needed; 
         private int? _chunkDuration;
     
@@ -1160,7 +1212,7 @@ namespace DR.FFMpegClient
     
         [JsonProperty("State", Required = Required.Default)]
         [JsonConverter(typeof(StringEnumConverter))]
-        public State4 State
+        public State State
         {
             get { return _state; }
             set 
@@ -1231,10 +1283,11 @@ namespace DR.FFMpegClient
         private bool? _done; 
         private int? _id; 
         private bool? _failed; 
-        private State5 _state; 
+        private State _state; 
         private string _sourceFilename; 
         private Type6 _type;
     
+        /// <summary>Job id</summary>
         [JsonProperty("JobCorrelationId", Required = Required.Default)]
         public string JobCorrelationId
         {
@@ -1249,6 +1302,7 @@ namespace DR.FFMpegClient
             }
         }
     
+        /// <summary>Client machine name. Used when reporting progress updates</summary>
         [JsonProperty("MachineName", Required = Required.Default)]
         public string MachineName
         {
@@ -1263,6 +1317,8 @@ namespace DR.FFMpegClient
             }
         }
     
+        /// <summary>Progress of how many seconds has been encoded
+        /// Used when reporting progress updates</summary>
         [JsonProperty("Progress", Required = Required.Default)]
         public string Progress
         {
@@ -1277,6 +1333,7 @@ namespace DR.FFMpegClient
             }
         }
     
+        /// <summary>Whether this job is done</summary>
         [JsonProperty("Done", Required = Required.Default)]
         public bool? Done
         {
@@ -1321,7 +1378,7 @@ namespace DR.FFMpegClient
     
         [JsonProperty("State", Required = Required.Default)]
         [JsonConverter(typeof(StringEnumConverter))]
-        public State5 State
+        public State State
         {
             get { return _state; }
             set 
@@ -1334,6 +1391,7 @@ namespace DR.FFMpegClient
             }
         }
     
+        /// <summary>Source filename</summary>
         [JsonProperty("SourceFilename", Required = Required.Default)]
         public string SourceFilename
         {
@@ -1501,71 +1559,16 @@ namespace DR.FFMpegClient
     }
     
     [GeneratedCode("NJsonSchema", "2.62.6049.40362")]
-    public enum State3
+    public enum Channels
     {
         [EnumMember(Value = "Unknown")]
         Unknown = 0,
     
-        [EnumMember(Value = "Queued")]
-        Queued = 1,
+        [EnumMember(Value = "Mono")]
+        Mono = 1,
     
-        [EnumMember(Value = "Paused")]
-        Paused = 2,
-    
-        [EnumMember(Value = "InProgress")]
-        InProgress = 3,
-    
-        [EnumMember(Value = "Done")]
-        Done = 4,
-    
-        [EnumMember(Value = "Failed")]
-        Failed = 5,
-    
-    }
-    
-    [GeneratedCode("NJsonSchema", "2.62.6049.40362")]
-    public enum State4
-    {
-        [EnumMember(Value = "Unknown")]
-        Unknown = 0,
-    
-        [EnumMember(Value = "Queued")]
-        Queued = 1,
-    
-        [EnumMember(Value = "Paused")]
-        Paused = 2,
-    
-        [EnumMember(Value = "InProgress")]
-        InProgress = 3,
-    
-        [EnumMember(Value = "Done")]
-        Done = 4,
-    
-        [EnumMember(Value = "Failed")]
-        Failed = 5,
-    
-    }
-    
-    [GeneratedCode("NJsonSchema", "2.62.6049.40362")]
-    public enum State5
-    {
-        [EnumMember(Value = "Unknown")]
-        Unknown = 0,
-    
-        [EnumMember(Value = "Queued")]
-        Queued = 1,
-    
-        [EnumMember(Value = "Paused")]
-        Paused = 2,
-    
-        [EnumMember(Value = "InProgress")]
-        InProgress = 3,
-    
-        [EnumMember(Value = "Done")]
-        Done = 4,
-    
-        [EnumMember(Value = "Failed")]
-        Failed = 5,
+        [EnumMember(Value = "Stereo")]
+        Stereo = 2,
     
     }
     
