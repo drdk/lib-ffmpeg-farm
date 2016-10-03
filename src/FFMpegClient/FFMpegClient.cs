@@ -338,7 +338,7 @@ namespace DR.FFMpegClient
         /// <param name="jobId">Job id</param>
         /// <returns>No Content</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public Task ResumeAsync(string jobId, Type1 type)
+        public Task ResumeAsync(string jobId, Type type)
         {
             return ResumeAsync(jobId, type, CancellationToken.None);
         }
@@ -348,7 +348,7 @@ namespace DR.FFMpegClient
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>No Content</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async Task ResumeAsync(string jobId, Type1 type, CancellationToken cancellationToken)
+        public async Task ResumeAsync(string jobId, Type type, CancellationToken cancellationToken)
         {
             var url_ = string.Format("{0}/{1}?", BaseUrl, "api/Resume");
     
@@ -498,7 +498,7 @@ namespace DR.FFMpegClient
         /// <param name="id">ID of job to get status of</param>
         /// <returns>OK</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public Task<JobRequestModel> GetAsync(string id)
+        public Task<JobStatus> GetAsync(string id)
         {
             return GetAsync(id, CancellationToken.None);
         }
@@ -508,7 +508,7 @@ namespace DR.FFMpegClient
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async Task<JobRequestModel> GetAsync(string id, CancellationToken cancellationToken)
+        public async Task<JobStatus> GetAsync(string id, CancellationToken cancellationToken)
         {
             var url_ = string.Format("{0}/{1}?", BaseUrl, "api/Status/{id}");
             if (id == null)
@@ -528,11 +528,11 @@ namespace DR.FFMpegClient
     
             if (status_ == "200") 
             {
-                var result_ = default(JobRequestModel); 
+                var result_ = default(JobStatus); 
                 try
                 {
                     if (responseData_.Length > 0)
-                        result_ = JsonConvert.DeserializeObject<JobRequestModel>(Encoding.UTF8.GetString(responseData_));                                
+                        result_ = JsonConvert.DeserializeObject<JobStatus>(Encoding.UTF8.GetString(responseData_));                                
                     return result_; 
                 } 
                 catch (Exception exception) 
@@ -557,7 +557,7 @@ namespace DR.FFMpegClient
     { 
         private string _arguments; 
         private DateTime? _needed; 
-        private Type2 _type; 
+        private Type _type; 
         private string _jobCorrelationId; 
         private string _machineName; 
         private string _progress; 
@@ -597,7 +597,7 @@ namespace DR.FFMpegClient
     
         [JsonProperty("Type", Required = Required.Default)]
         [JsonConverter(typeof(StringEnumConverter))]
-        public Type2 Type
+        public Type Type
         {
             get { return _type; }
             set 
@@ -1037,22 +1037,22 @@ namespace DR.FFMpegClient
                 }
             }
         }
-
+    
         [JsonProperty("State", Required = Required.Default)]
         [JsonConverter(typeof(StringEnumConverter))]
         public State State
         {
             get { return _state; }
-            set
+            set 
             {
                 if (_state != value)
                 {
-                    _state = value;
+                    _state = value; 
                     RaisePropertyChanged();
                 }
             }
         }
-
+    
         [JsonProperty("Created", Required = Required.Default)]
         public DateTime? Created
         {
@@ -1285,7 +1285,7 @@ namespace DR.FFMpegClient
         private bool? _failed; 
         private State _state; 
         private string _sourceFilename; 
-        private Type6 _type;
+        private Type _type;
     
         /// <summary>Job id</summary>
         [JsonProperty("JobCorrelationId", Required = Required.Default)]
@@ -1408,7 +1408,7 @@ namespace DR.FFMpegClient
     
         [JsonProperty("Type", Required = Required.Default)]
         [JsonConverter(typeof(StringEnumConverter))]
-        public Type6 Type
+        public Type Type
         {
             get { return _type; }
             set 
@@ -1441,48 +1441,94 @@ namespace DR.FFMpegClient
         }
     }
     
+    [JsonObject(MemberSerialization.OptIn)]
+    [GeneratedCode("NJsonSchema", "2.62.6049.40362")]
+    public partial class JobStatus : INotifyPropertyChanged
+    { 
+        private string _jobCorrelationId; 
+        private State _state; 
+        private DateTime? _created; 
+        private ObservableCollection<string> _outputFiles;
+    
+        [JsonProperty("JobCorrelationId", Required = Required.Default)]
+        public string JobCorrelationId
+        {
+            get { return _jobCorrelationId; }
+            set 
+            {
+                if (_jobCorrelationId != value)
+                {
+                    _jobCorrelationId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("State", Required = Required.Default)]
+        [JsonConverter(typeof(StringEnumConverter))]
+        public State State
+        {
+            get { return _state; }
+            set 
+            {
+                if (_state != value)
+                {
+                    _state = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("Created", Required = Required.Default)]
+        public DateTime? Created
+        {
+            get { return _created; }
+            set 
+            {
+                if (_created != value)
+                {
+                    _created = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("OutputFiles", Required = Required.Default)]
+        public ObservableCollection<string> OutputFiles
+        {
+            get { return _outputFiles; }
+            set 
+            {
+                if (_outputFiles != value)
+                {
+                    _outputFiles = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public event PropertyChangedEventHandler PropertyChanged;
+    
+        public string ToJson() 
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        
+        public static JobStatus FromJson(string data)
+        {
+            return JsonConvert.DeserializeObject<JobStatus>(data);
+        }
+        
+        protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+    
     [GeneratedCode("NJsonSchema", "2.62.6049.40362")]
     public enum Type
-    {
-        [EnumMember(Value = "Unknown")]
-        Unknown = 0,
-    
-        [EnumMember(Value = "Audio")]
-        Audio = 1,
-    
-        [EnumMember(Value = "Video")]
-        Video = 2,
-    
-        [EnumMember(Value = "VideoMp4box")]
-        VideoMp4box = 3,
-    
-        [EnumMember(Value = "VideoMerge")]
-        VideoMerge = 4,
-    
-    }
-    
-    [GeneratedCode("NJsonSchema", "2.62.6049.40362")]
-    public enum Type1
-    {
-        [EnumMember(Value = "Unknown")]
-        Unknown = 0,
-    
-        [EnumMember(Value = "Audio")]
-        Audio = 1,
-    
-        [EnumMember(Value = "Video")]
-        Video = 2,
-    
-        [EnumMember(Value = "VideoMp4box")]
-        VideoMp4box = 3,
-    
-        [EnumMember(Value = "VideoMerge")]
-        VideoMerge = 4,
-    
-    }
-    
-    [GeneratedCode("NJsonSchema", "2.62.6049.40362")]
-    public enum Type2
     {
         [EnumMember(Value = "Unknown")]
         Unknown = 0,
@@ -1572,26 +1618,8 @@ namespace DR.FFMpegClient
     
     }
     
-    [GeneratedCode("NJsonSchema", "2.62.6049.40362")]
-    public enum Type6
-    {
-        [EnumMember(Value = "Unknown")]
-        Unknown = 0,
-    
-        [EnumMember(Value = "Audio")]
-        Audio = 1,
-    
-        [EnumMember(Value = "Video")]
-        Video = 2,
-    
-        [EnumMember(Value = "VideoMp4box")]
-        VideoMp4box = 3,
-    
-        [EnumMember(Value = "VideoMerge")]
-        VideoMerge = 4,
-    
-    }
 
+    
     [GeneratedCode("NSwag", "3.29.6049.41186")]
     public class SwaggerException : Exception
     {
