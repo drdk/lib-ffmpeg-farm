@@ -253,6 +253,69 @@ namespace DR.FFMpegClient
     }
     
     [GeneratedCode("NSwag", "3.29.6049.41186")]
+    public partial class HealthCheckClient 
+    {
+        public HealthCheckClient() : this("http://od01udv:9000") { }
+    
+        public HealthCheckClient(string baseUrl)
+        {
+            BaseUrl = baseUrl; 
+        }
+    
+        partial void PrepareRequest(HttpClient request, ref string url);
+    
+        partial void ProcessResponse(HttpClient request, HttpResponseMessage response);
+    
+        public string BaseUrl { get; set; }
+    
+        /// <returns>OK</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public Task<ServiceStatus> GetAsync()
+        {
+            return GetAsync(CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>OK</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async Task<ServiceStatus> GetAsync(CancellationToken cancellationToken)
+        {
+            var url_ = string.Format("{0}/{1}?", BaseUrl, "api/HealthCheck");
+    
+     
+            var client_ = new HttpClient();
+            PrepareRequest(client_, ref url_);
+    
+            var response_ = await client_.GetAsync(url_, cancellationToken).ConfigureAwait(false);
+            ProcessResponse(client_, response_);
+    
+            var responseData_ = await response_.Content.ReadAsByteArrayAsync().ConfigureAwait(false); 
+            var status_ = ((int)response_.StatusCode).ToString();
+    
+            if (status_ == "200") 
+            {
+                var result_ = default(ServiceStatus); 
+                try
+                {
+                    if (responseData_.Length > 0)
+                        result_ = JsonConvert.DeserializeObject<ServiceStatus>(Encoding.UTF8.GetString(responseData_));                                
+                    return result_; 
+                } 
+                catch (Exception exception) 
+                {
+                    throw new SwaggerException("Could not deserialize the response body.", status_, responseData_, exception);
+                }
+            }
+            else
+            {
+            }
+    
+            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", status_, responseData_, null);
+        }
+    
+    }
+    
+    [GeneratedCode("NSwag", "3.29.6049.41186")]
     public partial class PauseClient 
     {
         public PauseClient() : this("http://od01udv:9000") { }
@@ -1013,6 +1076,102 @@ namespace DR.FFMpegClient
     
     [JsonObject(MemberSerialization.OptIn)]
     [GeneratedCode("NJsonSchema", "2.62.6049.40362")]
+    public partial class ServiceStatus : INotifyPropertyChanged
+    { 
+        private ObservableCollection<WorkerStatus> _workers;
+    
+        [JsonProperty("Workers", Required = Required.Default)]
+        public ObservableCollection<WorkerStatus> Workers
+        {
+            get { return _workers; }
+            set 
+            {
+                if (_workers != value)
+                {
+                    _workers = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public event PropertyChangedEventHandler PropertyChanged;
+    
+        public string ToJson() 
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        
+        public static ServiceStatus FromJson(string data)
+        {
+            return JsonConvert.DeserializeObject<ServiceStatus>(data);
+        }
+        
+        protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+    
+    [JsonObject(MemberSerialization.OptIn)]
+    [GeneratedCode("NJsonSchema", "2.62.6049.40362")]
+    public partial class WorkerStatus : INotifyPropertyChanged
+    { 
+        private string _workerName; 
+        private Status _status;
+    
+        [JsonProperty("WorkerName", Required = Required.Default)]
+        public string WorkerName
+        {
+            get { return _workerName; }
+            set 
+            {
+                if (_workerName != value)
+                {
+                    _workerName = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("Status", Required = Required.Default)]
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Status Status
+        {
+            get { return _status; }
+            set 
+            {
+                if (_status != value)
+                {
+                    _status = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public event PropertyChangedEventHandler PropertyChanged;
+    
+        public string ToJson() 
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        
+        public static WorkerStatus FromJson(string data)
+        {
+            return JsonConvert.DeserializeObject<WorkerStatus>(data);
+        }
+        
+        protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+    
+    [JsonObject(MemberSerialization.OptIn)]
+    [GeneratedCode("NJsonSchema", "2.62.6049.40362")]
     public partial class JobRequestModel : INotifyPropertyChanged
     { 
         private string _jobCorrelationId; 
@@ -1618,8 +1777,21 @@ namespace DR.FFMpegClient
     
     }
     
-
+    [GeneratedCode("NJsonSchema", "2.62.6049.40362")]
+    public enum Status
+    {
+        [EnumMember(Value = "Unknown")]
+        Unknown = 0,
     
+        [EnumMember(Value = "OK")]
+        OK = 1,
+    
+        [EnumMember(Value = "NonResponsive")]
+        NonResponsive = 2,
+    
+    }
+    
+
     [GeneratedCode("NSwag", "3.29.6049.41186")]
     public class SwaggerException : Exception
     {
