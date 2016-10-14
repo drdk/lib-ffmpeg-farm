@@ -23,7 +23,7 @@ namespace DR.FFMpegClient.Test
         public void InvalidOrderJsonExceptionTest()
         {
             var req =new AudioJobRequestModel();
-            var jobTask = _audioClient.PostAsync(req);
+            var jobTask = _audioClient.CreateNewAsync(req);
             var innerException =
                 Assert.Throws<AggregateException>(() => 
                 jobTask.Wait()).InnerException as JsonSerializationException;
@@ -42,7 +42,7 @@ namespace DR.FFMpegClient.Test
                 OutputFolder = "\\\\ondnas01\\MediaCache\\Test\\FFMpg",
                 Needed = DateTime.UtcNow
             };
-            var jobTask = _audioClient.PostAsync(req);
+            var jobTask = _audioClient.CreateNewAsync(req);
             var innerException =
                 Assert.Throws<AggregateException>(() =>
                 jobTask.Wait()).InnerException as SwaggerException;
