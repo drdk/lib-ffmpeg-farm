@@ -72,7 +72,7 @@ namespace DR.FFMpegClient.Test
             CleanUp();
         }
 
-        [Test]
+        [Test, Explicit]
         public async void StatusTest()
         {
             var sw = new Stopwatch();
