@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace DR.FFMpegClient.Test
@@ -73,7 +74,7 @@ namespace DR.FFMpegClient.Test
         }
 
         [Test, Explicit]
-        public async void StatusTest()
+        public async Task StatusTest()
         {
             var sw = new Stopwatch();
             sw.Start();
@@ -90,7 +91,7 @@ namespace DR.FFMpegClient.Test
         //}
 
         [Test, Explicit]
-        public async void AudioJobTest()
+        public async Task AudioJobTest()
         {
             File.Copy(AudioTestFile, _sourceAudioTestFile);
             Directory.CreateDirectory(_targetTestPath);
@@ -147,7 +148,7 @@ namespace DR.FFMpegClient.Test
         }
 
         [Test, Explicit]
-        public async void MuxingJobTest()
+        public async Task MuxingJobTest()
         {
             File.Copy(MuxTestAudioFile, _sourceMuxTestAudioFile);
             File.Copy(MuxTestVideoFile, _sourceMuxTestVideoFile);
