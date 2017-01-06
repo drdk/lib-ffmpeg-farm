@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace DR.FFMpegClient.Test
 {
+    //TODO : This test is incomplete , lets add it or remove it. 
     [TestFixture]
     public class IntegrationTest
     {
@@ -17,7 +13,7 @@ namespace DR.FFMpegClient.Test
         private const string ServiceUri = "http://od01udv:9000";
         private readonly string _destination = $@"\\ondnas01\MediaCache\Test\lib-FFMpg-integrations-test-{Environment.MachineName}-{DateTime.Now:yyyy-MM-dd-HH-mm}";
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void FixtureSetUp()
         {
 
