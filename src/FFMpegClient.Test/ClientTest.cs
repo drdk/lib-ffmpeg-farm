@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using Newtonsoft.Json;
@@ -38,7 +39,7 @@ namespace DR.FFMpegClient.Test
             {
                 //Targets = null,
                 Inpoint = "\\\\ondnas01\\MediaCache\\Test\\",
-                SourceFilename = "cliptest1.mov",
+                SourceFilenames = new ObservableCollection<string> { "cliptest1.mov" },
                 OutputFolder = "\\\\ondnas01\\MediaCache\\Test\\FFMpg",
                 Needed = DateTime.UtcNow
             };

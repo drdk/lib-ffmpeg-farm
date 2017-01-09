@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -78,7 +80,7 @@ namespace DR.FFMpegClient.Test
         {
             var sw = new Stopwatch();
             sw.Start();
-            var res = await _statusClient.GetAllAsync();
+            var res = await _statusClient.GetAllAsync(null);
             sw.Stop();
             Console.WriteLine("Status : " + res + " response time " + sw.ElapsedMilliseconds + " ms");
             //Assert.That(res.Count, Is.GreaterThan(0));
@@ -95,14 +97,14 @@ namespace DR.FFMpegClient.Test
         {
             File.Copy(AudioTestFile, _sourceAudioTestFile);
             Directory.CreateDirectory(_targetTestPath);
-
+            
             AudioJobRequestModel request = new AudioJobRequestModel()
             {
                 DestinationFilenamePrefix = _targetFileAudioPrefix,
                 Inpoint = "0",
                 Needed = DateTime.UtcNow,
                 OutputFolder = _targetTestPath,
-                SourceFilename = _sourceAudioTestFile,
+                SourceFilenames = new ObservableCollection<string>() { _sourceAudioTestFile },
                 Targets = new System.Collections.ObjectModel.ObservableCollection<AudioDestinationFormat>()
                 {
                     new AudioDestinationFormat() { AudioCodec = AudioCodec.MP3, Bitrate = 32, Channels = Channels.Mono, Format = Format.MP3 },

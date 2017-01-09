@@ -426,19 +426,20 @@ namespace DR.FFMpegClient
         /// <summary>Get status for all jobs</summary>
         /// <returns>OK</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public Task<ObservableCollection<FfmpegJobModel>> GetAllAsync()
+        public Task<ObservableCollection<FfmpegJobModel>> GetAllAsync(int? take)
         {
-            return GetAllAsync(CancellationToken.None);
+            return GetAllAsync(take, CancellationToken.None);
         }
     
         /// <summary>Get status for all jobs</summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async Task<ObservableCollection<FfmpegJobModel>> GetAllAsync(CancellationToken cancellationToken)
+        public async Task<ObservableCollection<FfmpegJobModel>> GetAllAsync(int? take, CancellationToken cancellationToken)
         {
             var url_ = string.Format("{0}/{1}?", BaseUrl, "api/Status");
     
+            url_ += string.Format("take={0}&", Uri.EscapeUriString(take != null ? take.Value.ToString() : "null"));
      
             var client_ = new HttpClient();
             PrepareRequest(client_, ref url_);
@@ -659,7 +660,7 @@ namespace DR.FFMpegClient
     { 
         private ObservableCollection<AudioDestinationFormat> _targets; 
         private string _destinationFilenamePrefix; 
-        private string _sourceFilename; 
+        private ObservableCollection<string> _sourceFilenames; 
         private string _outputFolder; 
         private DateTime _needed; 
         private string _inpoint;
@@ -694,16 +695,16 @@ namespace DR.FFMpegClient
             }
         }
     
-        [JsonProperty("SourceFilename", Required = Required.Always)]
+        [JsonProperty("SourceFilenames", Required = Required.Always)]
         [Required]
-        public string SourceFilename
+        public ObservableCollection<string> SourceFilenames
         {
-            get { return _sourceFilename; }
+            get { return _sourceFilenames; }
             set 
             {
-                if (_sourceFilename != value)
+                if (_sourceFilenames != value)
                 {
-                    _sourceFilename = value; 
+                    _sourceFilenames = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -1241,7 +1242,8 @@ namespace DR.FFMpegClient
         private State1 _state; 
         private DateTime? _heartbeat; 
         private string _heartbeatMachine; 
-        private string _destinationFilename;
+        private string _destinationFilename; 
+        private DateTime? _started;
     
         [JsonProperty("Progress", Required = Required.Default)]
         public double? Progress
@@ -1309,6 +1311,20 @@ namespace DR.FFMpegClient
                 if (_destinationFilename != value)
                 {
                     _destinationFilename = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("Started", Required = Required.Default)]
+        public DateTime? Started
+        {
+            get { return _started; }
+            set 
+            {
+                if (_started != value)
+                {
+                    _started = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -1449,7 +1465,8 @@ namespace DR.FFMpegClient
         private string _heartbeatMachineName; 
         private double? _progress; 
         private int? _destinationDurationSeconds; 
-        private string _destinationFilename;
+        private string _destinationFilename; 
+        private bool? _verifyOutput;
     
         [JsonProperty("Id", Required = Required.Default)]
         public int? Id
@@ -1587,6 +1604,20 @@ namespace DR.FFMpegClient
                 if (_destinationFilename != value)
                 {
                     _destinationFilename = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [JsonProperty("VerifyOutput", Required = Required.Default)]
+        public bool? VerifyOutput
+        {
+            get { return _verifyOutput; }
+            set 
+            {
+                if (_verifyOutput != value)
+                {
+                    _verifyOutput = value; 
                     RaisePropertyChanged();
                 }
             }
