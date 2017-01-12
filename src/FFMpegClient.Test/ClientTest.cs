@@ -16,8 +16,8 @@ namespace DR.FFMpegClient.Test
         [SetUp]
         public void SetUp()
         {
-            _audioClient = new AudioJobClient(ServiceUri);
-            _statusClient = new StatusClient(ServiceUri);
+            _audioClient = new AudioJobClient { BaseUrl = ServiceUri };
+            _statusClient = new StatusClient { BaseUrl = ServiceUri };
         }
 
         [Test]

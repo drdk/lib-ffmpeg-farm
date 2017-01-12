@@ -53,7 +53,6 @@
   <ItemGroup>
     <Compile Include="ClientTest.cs" />
     <Compile Include="FFMpegServiceTest.cs" />
-    <Compile Include="IntegrationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

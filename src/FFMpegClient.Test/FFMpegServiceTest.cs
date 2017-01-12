@@ -32,9 +32,9 @@ namespace DR.FFMpegClient.Test
         [SetUp]
         public void FixtureSetup()
         {
-            _audioJobClient = new AudioJobClient(ffmpegFarmUrl);
-            _muxJobClient = new MuxJobClient(ffmpegFarmUrl);
-            _statusClient = new StatusClient(ffmpegFarmUrl);
+            _audioJobClient = new AudioJobClient { BaseUrl = ffmpegFarmUrl };
+            _muxJobClient = new MuxJobClient { BaseUrl = ffmpegFarmUrl };
+            _statusClient = new StatusClient { BaseUrl = ffmpegFarmUrl };
             _sourceMuxTestVideoFile = string.Format(_sourceMuxTestVideoFile, Environment.MachineName);
             _sourceMuxTestAudioFile = string.Format(_sourceMuxTestAudioFile, Environment.MachineName);
             _sourceAudioTestFile = string.Format(_sourceAudioTestFile, Environment.MachineName);
@@ -107,10 +107,10 @@ namespace DR.FFMpegClient.Test
                 SourceFilenames = new ObservableCollection<string>() { _sourceAudioTestFile },
                 Targets = new System.Collections.ObjectModel.ObservableCollection<AudioDestinationFormat>()
                 {
-                    new AudioDestinationFormat() { AudioCodec = AudioCodec.MP3, Bitrate = 32, Channels = Channels.Mono, Format = Format.MP3 },
-                    new AudioDestinationFormat() { AudioCodec = AudioCodec.MP3, Bitrate = 192, Channels = Channels.Stereo, Format = Format.MP3 },
-                    new AudioDestinationFormat() { AudioCodec = AudioCodec.AAC, Bitrate = 32, Channels = Channels.Mono, Format = Format.MP4 },
-                    new AudioDestinationFormat() { AudioCodec = AudioCodec.AAC, Bitrate = 192, Channels = Channels.Stereo, Format = Format.MP4 },
+                    new AudioDestinationFormat() { AudioCodec = AudioDestinationFormatAudioCodec.MP3, Bitrate = 32, Channels = AudioDestinationFormatChannels.Mono, Format = AudioDestinationFormatFormat.MP3 },
+                    new AudioDestinationFormat() { AudioCodec = AudioDestinationFormatAudioCodec.MP3, Bitrate = 192, Channels = AudioDestinationFormatChannels.Stereo, Format = AudioDestinationFormatFormat.MP3 },
+                    new AudioDestinationFormat() { AudioCodec = AudioDestinationFormatAudioCodec.AAC, Bitrate = 32, Channels = AudioDestinationFormatChannels.Mono, Format = AudioDestinationFormatFormat.MP4 },
+                    new AudioDestinationFormat() { AudioCodec = AudioDestinationFormatAudioCodec.AAC, Bitrate = 192, Channels = AudioDestinationFormatChannels.Stereo, Format = AudioDestinationFormatFormat.MP4 },
                 }
             };
 
@@ -125,11 +125,11 @@ namespace DR.FFMpegClient.Test
             do
             {
                 job = await _statusClient.GetAsync(jobGuid);
-                var runningTask = job.Tasks.FirstOrDefault(t => t.State == State1.InProgress);
+                var runningTask = job.Tasks.FirstOrDefault(t => t.State == FfmpegTaskModelState.InProgress);
                 Console.WriteLine("Jobstatus : {0}, time: {1} ms, filename: {3}, {2:0.##} %", job.State.ToString(), sw.ElapsedMilliseconds, runningTask?.Progress, runningTask?.DestinationFilename);
-                if (job.State == State.Failed || job.State == State.Canceled || job.State == State.Unknown)
+                if (job.State == FfmpegJobModelState.Failed || job.State == FfmpegJobModelState.Canceled || job.State == FfmpegJobModelState.Unknown)
                     throw new Exception("Error running job. job state: " + job.State.ToString());
-                done = job.State == State.Done;
+                done = job.State == FfmpegJobModelState.Done;
                 if (!done)
                 {
                     Thread.Sleep(1000);
@@ -177,11 +177,11 @@ namespace DR.FFMpegClient.Test
             do
             {
                 job = await _statusClient.GetAsync(jobGuid);
-                var runningTask = job.Tasks.FirstOrDefault(t => t.State == State1.InProgress);
+                var runningTask = job.Tasks.FirstOrDefault(t => t.State == FfmpegTaskModelState.InProgress);
                 Console.WriteLine("Jobstatus : {0}, time: {1} ms, filename: {3}, {2:0.##} %", job.State.ToString(), sw.ElapsedMilliseconds, runningTask?.Progress, runningTask?.DestinationFilename);
-                if (job.State == State.Failed || job.State == State.Canceled || job.State == State.Unknown)
+                if (job.State == FfmpegJobModelState.Failed || job.State == FfmpegJobModelState.Canceled || job.State == FfmpegJobModelState.Unknown)
                     throw new Exception("Error running job. job state: " + job.State.ToString());
-                done = job.State == State.Done;
+                done = job.State == FfmpegJobModelState.Done;
                 if (!done)
                 {
                     Thread.Sleep(1000);
