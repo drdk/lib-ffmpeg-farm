@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -24,7 +23,7 @@ namespace DR.FFMpegClient.Test
         private string _sourceMuxTestVideoFile = TestRoot + "UnitTestFileMux-{0}.mov";
         private string _sourceMuxTestAudioFile = TestRoot + "UnitTestFileMux-{0}.wav";
         private string _sourceAudioTestFile = TestRoot + "UnitTestFileAudio-{0}.wav";
-        private string _targetTestPath = TestRoot + "UnitTest-{0}";
+        private string _targetTestPath = TestRoot + "UnitTest-{0}-{1}";
         private string _targetFileAudioPrefix = "UnitTest-Audio-{0}";
         private string _targetFileMux = "UnitTest-Mux-{0}.mov";
 
@@ -38,7 +37,7 @@ namespace DR.FFMpegClient.Test
             _sourceMuxTestVideoFile = string.Format(_sourceMuxTestVideoFile, Environment.MachineName);
             _sourceMuxTestAudioFile = string.Format(_sourceMuxTestAudioFile, Environment.MachineName);
             _sourceAudioTestFile = string.Format(_sourceAudioTestFile, Environment.MachineName);
-            _targetTestPath = string.Format(_targetTestPath, Environment.MachineName);
+            _targetTestPath = string.Format(_targetTestPath, Environment.MachineName, DateTime.Now.Ticks);
             _targetFileAudioPrefix = string.Format(_targetFileAudioPrefix, Environment.MachineName);
             _targetFileMux = string.Format(_targetFileMux, Environment.MachineName);
 
@@ -82,7 +81,7 @@ namespace DR.FFMpegClient.Test
             sw.Start();
             var res = await _statusClient.GetAllAsync(null);
             sw.Stop();
-            Console.WriteLine("Status : " + res + " response time " + sw.ElapsedMilliseconds + " ms");
+            Console.WriteLine("Status : " + res.Count + " response time " + sw.ElapsedMilliseconds + " ms");
             //Assert.That(res.Count, Is.GreaterThan(0));
         }
 
@@ -104,8 +103,8 @@ namespace DR.FFMpegClient.Test
                 Inpoint = "0",
                 Needed = DateTime.UtcNow,
                 OutputFolder = _targetTestPath,
-                SourceFilenames = new ObservableCollection<string>() { _sourceAudioTestFile },
-                Targets = new System.Collections.ObjectModel.ObservableCollection<AudioDestinationFormat>()
+                SourceFilenames = new ObservableCollection<string>( new[] { _sourceAudioTestFile }),
+                Targets = new ObservableCollection<AudioDestinationFormat>()
                 {
                     new AudioDestinationFormat() { AudioCodec = AudioDestinationFormatAudioCodec.MP3, Bitrate = 32, Channels = AudioDestinationFormatChannels.Mono, Format = AudioDestinationFormatFormat.MP3 },
                     new AudioDestinationFormat() { AudioCodec = AudioDestinationFormatAudioCodec.MP3, Bitrate = 192, Channels = AudioDestinationFormatChannels.Stereo, Format = AudioDestinationFormatFormat.MP3 },
@@ -119,7 +118,7 @@ namespace DR.FFMpegClient.Test
             bool done;
             int maxCount = 240;
             Stopwatch sw = new Stopwatch();
-            Console.WriteLine("Starting job {0}", jobGuid.ToString());
+            Console.WriteLine("Starting job {0}", jobGuid);
             sw.Start();
             FfmpegJobModel job;
             do
