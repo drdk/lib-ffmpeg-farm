@@ -198,8 +198,8 @@ namespace DR.FFMpegClient.Test
         public async Task AudioIntroOutroJobTest()
         {
             File.Copy(AudioTestFile, _sourceAudioTestFile);
-            File.Copy(AudioTestFile, _sourceAudioIntroFile);
-            File.Copy(AudioTestFile, _sourceAudioOutroFile);
+            File.Copy(AudioIntroTestFile, _sourceAudioIntroFile);
+            File.Copy(AudioOutroTestFile, _sourceAudioOutroFile);
             Directory.CreateDirectory(_targetTestPath);
 
             AudioJobRequestModel request = new AudioJobRequestModel()
