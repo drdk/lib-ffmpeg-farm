@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MediaInfoDotNet;
 using NUnit.Framework;
 
 namespace DR.FFMpegClient.Test
@@ -202,6 +203,13 @@ namespace DR.FFMpegClient.Test
             File.Copy(AudioOutroTestFile, _sourceAudioOutroFile);
             Directory.CreateDirectory(_targetTestPath);
 
+            var introDuration = new MediaFile(_sourceAudioIntroFile).Audio[0].Duration;
+            var mainDuration = new MediaFile(_sourceAudioTestFile).Audio[0].Duration;
+            var outroDuration = new MediaFile(_sourceAudioOutroFile).Audio[0].Duration;
+            Assert.That(introDuration, Is.GreaterThan(0));
+            Assert.That(mainDuration, Is.GreaterThan(0));
+            Assert.That(outroDuration, Is.GreaterThan(0));
+
             AudioJobRequestModel request = new AudioJobRequestModel()
             {
                 DestinationFilenamePrefix = _targetFileAudioIntroOutroPrefix,
@@ -241,9 +249,18 @@ namespace DR.FFMpegClient.Test
             Assert.That(job.Tasks.Count, Is.EqualTo(request.Targets.Count));
             foreach (var target in job.Tasks)
             {
-                string fileFullPath = Path.Combine(_targetTestPath, target.DestinationFilename);
+                var fileFullPath = Path.Combine(_targetTestPath, target.DestinationFilename);
                 Console.WriteLine("Checking file: " + fileFullPath);
-                Assert.That(File.Exists(fileFullPath), Is.True, string.Format("Expected to find transcoded file @ " + fileFullPath));
+                Assert.That(File.Exists(fileFullPath), Is.True,
+                    string.Format("Expected to find transcoded file @ " + fileFullPath));
+                var mi = new MediaFile(fileFullPath);
+                if (mi.Audio[0].Duration == 0)
+                {
+                    Console.WriteLine($"Skips duration test for {fileFullPath} since media info thinks it has zero duration.");
+                    continue; 
+                }
+                var destDuration = mi.Audio[0].Duration;
+                Assert.That(Math.Abs(destDuration - (introDuration + mainDuration + outroDuration)), Is.LessThan(100), "Stiching should not differ more than 100 ms");
             }
         }
 
