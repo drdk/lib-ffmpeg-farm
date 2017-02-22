@@ -5,5 +5,5 @@ IF NOT EXIST NSwag (
 ) ELSE (
     cd NSwag
 )
-nswag swagger2csclient /input:http://od01udv:9000/swagger/docs/v1 /classname:{controller}Client /namespace:DR.FFMpegClient /output:..\src\FFMpegClient\FFMpegClient.cs
+nswag swagger2csclient /input:http://localhost:9000/swagger/docs/v1 /classname:{controller}Client /namespace:DR.FFMpegClient /output:..\src\FFMpegClient\FFMpegClient.cs
 cd .. 

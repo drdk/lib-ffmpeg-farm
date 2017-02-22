@@ -11,7 +11,7 @@ namespace DR.FFMpegClient
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "8.5.6214.25340")]
     public partial class AudioJobClient 
     {
-        private string _baseUrl = "http://od01udv:9000";
+        private string _baseUrl = "http://localhost:9000";
         
         public string BaseUrl 
         {
@@ -82,7 +82,7 @@ namespace DR.FFMpegClient
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "8.5.6214.25340")]
     public partial class ClientClient 
     {
-        private string _baseUrl = "http://od01udv:9000";
+        private string _baseUrl = "http://localhost:9000";
         
         public string BaseUrl 
         {
@@ -146,9 +146,78 @@ namespace DR.FFMpegClient
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "8.5.6214.25340")]
+    public partial class HardSubtitlesJobClient 
+    {
+        private string _baseUrl = "http://localhost:9000";
+        
+        public string BaseUrl 
+        {
+            get { return _baseUrl; }
+            set { _baseUrl = value; }
+        }
+    
+        partial void PrepareRequest(System.Net.Http.HttpClient request, ref string url);
+    
+        partial void ProcessResponse(System.Net.Http.HttpClient request, System.Net.Http.HttpResponseMessage response);
+    
+        /// <returns>OK</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<System.Guid> CreateNewAsync(HardSubtitlesJobRequestModel input)
+        {
+            return CreateNewAsync(input, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>OK</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<System.Guid> CreateNewAsync(HardSubtitlesJobRequestModel input, System.Threading.CancellationToken cancellationToken)
+        {
+            var url_ = string.Format("{0}/{1}", BaseUrl, "api/HardSubtitlesJob");
+    
+            using (var client_ = new System.Net.Http.HttpClient())
+            {
+                var request_ = new System.Net.Http.HttpRequestMessage();
+                PrepareRequest(client_, ref url_);
+                var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(input));
+                content_.Headers.ContentType.MediaType = "application/json";
+                request_.Content = content_;
+                request_.Method = new System.Net.Http.HttpMethod("POST");
+                request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseContentRead, cancellationToken).ConfigureAwait(false);
+                ProcessResponse(client_, response_);
+    
+                var responseData_ = await response_.Content.ReadAsByteArrayAsync().ConfigureAwait(false); 
+                var status_ = ((int)response_.StatusCode).ToString();
+    
+                if (status_ == "200") 
+                {
+                    var result_ = default(System.Guid); 
+                    try
+                    {
+                        if (responseData_.Length > 0)
+                            result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Guid>(System.Text.Encoding.UTF8.GetString(responseData_, 0, responseData_.Length));                                
+                        return result_; 
+                    } 
+                    catch (System.Exception exception) 
+                    {
+                        throw new SwaggerException("Could not deserialize the response body.", status_, responseData_, exception);
+                    }
+                }
+                else
+                if (status_ != "200" && status_ != "204")
+                    throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", status_, responseData_, null);
+            
+                return default(System.Guid);
+            }
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "8.5.6214.25340")]
     public partial class HealthCheckClient 
     {
-        private string _baseUrl = "http://od01udv:9000";
+        private string _baseUrl = "http://localhost:9000";
         
         public string BaseUrl 
         {
@@ -214,7 +283,7 @@ namespace DR.FFMpegClient
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "8.5.6214.25340")]
     public partial class JobClient 
     {
-        private string _baseUrl = "http://od01udv:9000";
+        private string _baseUrl = "http://localhost:9000";
         
         public string BaseUrl 
         {
@@ -346,7 +415,7 @@ namespace DR.FFMpegClient
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "8.5.6214.25340")]
     public partial class MuxJobClient 
     {
-        private string _baseUrl = "http://od01udv:9000";
+        private string _baseUrl = "http://localhost:9000";
         
         public string BaseUrl 
         {
@@ -415,7 +484,7 @@ namespace DR.FFMpegClient
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "8.5.6214.25340")]
     public partial class StatusClient 
     {
-        private string _baseUrl = "http://od01udv:9000";
+        private string _baseUrl = "http://localhost:9000";
         
         public string BaseUrl 
         {
@@ -603,7 +672,7 @@ namespace DR.FFMpegClient
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "8.5.6214.25340")]
     public partial class TaskClient 
     {
-        private string _baseUrl = "http://od01udv:9000";
+        private string _baseUrl = "http://localhost:9000";
         
         public string BaseUrl 
         {
@@ -930,6 +999,126 @@ namespace DR.FFMpegClient
         public static ClientHeartbeat FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ClientHeartbeat>(data);
+        }
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    }
+    
+    [Newtonsoft.Json.JsonObject(Newtonsoft.Json.MemberSerialization.OptIn)]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "7.3.6214.20986")]
+    public partial class HardSubtitlesJobRequestModel : System.ComponentModel.INotifyPropertyChanged
+    { 
+        private string _videoSourceFilename; 
+        private string _subtitlesFilename; 
+        private string _destinationFilename; 
+        private string _outputFolder; 
+        private System.DateTime _needed; 
+        private string _inpoint;
+    
+        [Newtonsoft.Json.JsonProperty("VideoSourceFilename", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string VideoSourceFilename
+        {
+            get { return _videoSourceFilename; }
+            set 
+            {
+                if (_videoSourceFilename != value)
+                {
+                    _videoSourceFilename = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+        
+        [Newtonsoft.Json.JsonProperty("SubtitlesFilename", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string SubtitlesFilename
+        {
+            get { return _subtitlesFilename; }
+            set 
+            {
+                if (_subtitlesFilename != value)
+                {
+                    _subtitlesFilename = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+        
+        [Newtonsoft.Json.JsonProperty("DestinationFilename", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string DestinationFilename
+        {
+            get { return _destinationFilename; }
+            set 
+            {
+                if (_destinationFilename != value)
+                {
+                    _destinationFilename = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+        
+        [Newtonsoft.Json.JsonProperty("OutputFolder", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string OutputFolder
+        {
+            get { return _outputFolder; }
+            set 
+            {
+                if (_outputFolder != value)
+                {
+                    _outputFolder = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+        
+        [Newtonsoft.Json.JsonProperty("Needed", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.DateTime Needed
+        {
+            get { return _needed; }
+            set 
+            {
+                if (_needed != value)
+                {
+                    _needed = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+        
+        [Newtonsoft.Json.JsonProperty("Inpoint", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Inpoint
+        {
+            get { return _inpoint; }
+            set 
+            {
+                if (_inpoint != value)
+                {
+                    _inpoint = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static HardSubtitlesJobRequestModel FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<HardSubtitlesJobRequestModel>(data);
         }
         
         protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
