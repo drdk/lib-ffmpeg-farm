@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading;
+using System.Net.Http;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
@@ -16,8 +15,9 @@ namespace DR.FFMpegClient.Test
         [SetUp]
         public void SetUp()
         {
-            _audioClient = new AudioJobClient { BaseUrl = ServiceUri };
-            _statusClient = new StatusClient { BaseUrl = ServiceUri };
+            var httpClient = new HttpClient();
+            _audioClient = new AudioJobClient(httpClient) { BaseUrl = ServiceUri };
+            _statusClient = new StatusClient(httpClient) { BaseUrl = ServiceUri };
         }
 
         [Test]
@@ -41,12 +41,14 @@ namespace DR.FFMpegClient.Test
                 Inpoint = "\\\\ondnas01\\MediaCache\\Test\\",
                 SourceFilenames = new ObservableCollection<string> { "cliptest1.mov" },
                 OutputFolder = "\\\\ondnas01\\MediaCache\\Test\\FFMpg",
+                DestinationFilenamePrefix = "",
                 Needed = DateTime.UtcNow
             };
             var jobTask = _audioClient.CreateNewAsync(req);
-            var innerException =
-                Assert.Throws<AggregateException>(() =>
-                jobTask.Wait()).InnerException as SwaggerException;
+            var agg = Assert.Throws<AggregateException>(() =>
+                jobTask.Wait());
+            var innerException = agg.InnerException as SwaggerException;
+            Console.WriteLine(innerException.Response);
 
         }
     }

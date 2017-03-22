@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using MediaInfoDotNet;
@@ -69,9 +70,10 @@ namespace DR.FFMpegClient.Test
         [SetUp]
         public void FixtureSetup()
         {
-            _audioJobClient = new AudioJobClient { BaseUrl = ffmpegFarmUrl };
-            _muxJobClient = new MuxJobClient { BaseUrl = ffmpegFarmUrl };
-            _statusClient = new StatusClient { BaseUrl = ffmpegFarmUrl };
+            var httpClient = new HttpClient();
+            _audioJobClient = new AudioJobClient(httpClient) { BaseUrl = ffmpegFarmUrl };
+            _muxJobClient = new MuxJobClient(httpClient) { BaseUrl = ffmpegFarmUrl };
+            _statusClient = new StatusClient(httpClient) { BaseUrl = ffmpegFarmUrl };
             _sourceMuxTestVideoFile = string.Format(_sourceMuxTestVideoFile, Environment.MachineName);
             _sourceMuxTestAudioFile = string.Format(_sourceMuxTestAudioFile, Environment.MachineName);
             _sourceAudioTestFile = string.Format(_sourceAudioTestFile, Environment.MachineName);
