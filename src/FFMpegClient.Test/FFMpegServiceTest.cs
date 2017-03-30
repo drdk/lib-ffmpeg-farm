@@ -17,7 +17,7 @@ namespace DR.FFMpegClient.Test
         private AudioJobClient _audioJobClient;
         private MuxJobClient _muxJobClient;
         private StatusClient _statusClient;
-        private const string ffmpegFarmUrl = "http://od01udv:9000"; // prod : "http://XXXXXX:9000"; dev: "http://od01udv:9000"
+        private const string ffmpegFarmUrl = "http://ffmpegctrl01udv.net.dr.dk:9000"; // prod : "http://XXXXXX:9000"; dev: "http://ffmpegctrl01udv.net.dr.dk:9000"
         private const string TestRoot = @"\\ondnas01\MediaCache\Test\";
         private const string MuxTestVideoFile = TestRoot + "FFMpegMuxJobTest.mov";
         private const string MuxTestAudioFile = TestRoot + "FFMpegMuxJobTest.wav";

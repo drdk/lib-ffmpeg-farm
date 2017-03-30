@@ -11,7 +11,7 @@ namespace DR.FFMpegClient.Test
     {
         private AudioJobClient _audioClient;
         private StatusClient _statusClient;
-        private const string ServiceUri = "http://od01udv:9000";
+        private const string ServiceUri = "http://ffmpegctrl01udv.net.dr.dk:9000";
         [SetUp]
         public void SetUp()
         {
