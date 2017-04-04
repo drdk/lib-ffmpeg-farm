@@ -174,9 +174,9 @@ namespace DR.FFMpegClient.Test
             {
                 job = await _statusClient.GetAsync(jobGuid);
                 var runningTask = job.Tasks.FirstOrDefault(t => t.State == FfmpegTaskModelState.InProgress);
-                Console.WriteLine("Jobstatus : {0}, time: {1} ms, filename: {3}, {2:0.##} %", job.State.ToString(), sw.ElapsedMilliseconds, runningTask?.Progress, runningTask?.DestinationFilename);
+                Console.WriteLine($"Jobstatus : {job.State}, time: {sw.ElapsedMilliseconds} ms, filename: {runningTask?.DestinationFilename}, {runningTask?.Progress:0.##} %");
                 if (job.State == FfmpegJobModelState.Failed || job.State == FfmpegJobModelState.Canceled || job.State == FfmpegJobModelState.Unknown)
-                    throw new Exception("Error running job. job state: " + job.State.ToString());
+                    throw new Exception($"Error running job. job state: {job.State}");
                 done = job.State == FfmpegJobModelState.Done;
                 if (!done)
                 {
@@ -186,14 +186,14 @@ namespace DR.FFMpegClient.Test
             } while (!done && maxCount-- > 0);
 
             Assert.That(done, Is.True);
-            Console.WriteLine("Job done, time : {0} ms ({1})", sw.ElapsedMilliseconds, maxCount);
+            Console.WriteLine($"Job done, time : {sw.ElapsedMilliseconds} ms ({maxCount})");
             sw.Stop();
             Assert.That(job.Tasks.Count, Is.EqualTo(request.Targets.Count));
             foreach (var target in job.Tasks)
             {
                 string fileFullPath = Path.Combine(_targetTestPath, target.DestinationFilename);
-                Console.WriteLine("Checking file: " + fileFullPath);
-                Assert.That(File.Exists(fileFullPath), Is.True, string.Format("Expected to find transcoded file @ " + fileFullPath));
+                Console.WriteLine($"Checking file: {fileFullPath}");
+                Assert.That(File.Exists(fileFullPath), Is.True, $"Expected to find transcoded file @ {fileFullPath}");
             }
         }
 
@@ -227,16 +227,16 @@ namespace DR.FFMpegClient.Test
             bool done;
             int maxCount = 240;
             Stopwatch sw = new Stopwatch();
-            Console.WriteLine("Starting job {0}", jobGuid);
+            Console.WriteLine($"Starting job {jobGuid}");
             sw.Start();
             FfmpegJobModel job;
             do
             {
                 job = await _statusClient.GetAsync(jobGuid);
                 var runningTask = job.Tasks.FirstOrDefault(t => t.State == FfmpegTaskModelState.InProgress);
-                Console.WriteLine("Jobstatus : {0}, time: {1} ms, filename: {3}, {2:0.##} %", job.State.ToString(), sw.ElapsedMilliseconds, runningTask?.Progress, runningTask?.DestinationFilename);
+                Console.WriteLine($"Jobstatus : {job.State}, time: {sw.ElapsedMilliseconds} ms, filename: {runningTask?.DestinationFilename}, {runningTask?.Progress:0.##} %");
                 if (job.State == FfmpegJobModelState.Failed || job.State == FfmpegJobModelState.Canceled || job.State == FfmpegJobModelState.Unknown)
-                    throw new Exception("Error running job. job state: " + job.State.ToString());
+                    throw new Exception($"Error running job. job state: {job.State}");
                 done = job.State == FfmpegJobModelState.Done;
                 if (!done)
                 {
@@ -246,15 +246,14 @@ namespace DR.FFMpegClient.Test
             } while (!done && maxCount-- > 0);
 
             Assert.That(done, Is.True);
-            Console.WriteLine("Job done, time : {0} ms ({1})", sw.ElapsedMilliseconds, maxCount);
+            Console.WriteLine($"Job done, time : {sw.ElapsedMilliseconds} ms ({maxCount})");
             sw.Stop();
             Assert.That(job.Tasks.Count, Is.EqualTo(request.Targets.Count));
             foreach (var target in job.Tasks)
             {
                 var fileFullPath = Path.Combine(_targetTestPath, target.DestinationFilename);
                 Console.WriteLine("Checking file: " + fileFullPath);
-                Assert.That(File.Exists(fileFullPath), Is.True,
-                    string.Format("Expected to find transcoded file @ " + fileFullPath));
+                Assert.That(File.Exists(fileFullPath), Is.True, $"Expected to find transcoded file @ {fileFullPath}");
                 var mi = new MediaFile(fileFullPath);
                 if (mi.Audio[0].Duration == 0)
                 {
@@ -288,16 +287,16 @@ namespace DR.FFMpegClient.Test
             bool done;
             int maxCount = 240;
             Stopwatch sw = new Stopwatch();
-            Console.WriteLine("Starting job {0}", jobGuid.ToString());
+            Console.WriteLine($"Starting job {jobGuid}");
             sw.Start();
             FfmpegJobModel job;
             do
             {
                 job = await _statusClient.GetAsync(jobGuid);
                 var runningTask = job.Tasks.FirstOrDefault(t => t.State == FfmpegTaskModelState.InProgress);
-                Console.WriteLine("Jobstatus : {0}, time: {1} ms, filename: {3}, {2:0.##} %", job.State.ToString(), sw.ElapsedMilliseconds, runningTask?.Progress, runningTask?.DestinationFilename);
+                Console.WriteLine($"Jobstatus : {job.State}, time: {sw.ElapsedMilliseconds} ms, filename: {runningTask?.DestinationFilename}, {runningTask?.Progress:0.##} %");
                 if (job.State == FfmpegJobModelState.Failed || job.State == FfmpegJobModelState.Canceled || job.State == FfmpegJobModelState.Unknown)
-                    throw new Exception("Error running job. job state: " + job.State.ToString());
+                    throw new Exception($"Error running job. job state: {job.State}");
                 done = job.State == FfmpegJobModelState.Done;
                 if (!done)
                 {
@@ -307,14 +306,14 @@ namespace DR.FFMpegClient.Test
             } while (!done && maxCount-- > 0);
 
             Assert.That(done, Is.True);
-            Console.WriteLine("Job done, time : {0} ms ({1})", sw.ElapsedMilliseconds, maxCount);
+            Console.WriteLine($"Job done, time : {sw.ElapsedMilliseconds} ms ({maxCount})");
             sw.Stop();
             
             foreach (var target in job.Tasks)
             {
                 string fileFullPath = Path.Combine(_targetTestPath, target.DestinationFilename);
                 Console.WriteLine("Checking file: " + fileFullPath);
-                Assert.That(File.Exists(fileFullPath), Is.True, string.Format("Expected to find transcoded file @ " + fileFullPath));
+                Assert.That(File.Exists(fileFullPath), Is.True, $"Expected to find transcoded file @ {fileFullPath}");
             }
         }
     }
