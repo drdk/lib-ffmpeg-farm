@@ -9,6 +9,107 @@ namespace DR.FFMpegClient
     #pragma warning disable // Disable all warnings
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "9.12.6284.27589")]
+    public partial class AudioDemuxJobClient 
+    {
+        private string _baseUrl = "http://localhost:9000";
+        
+        private System.Net.Http.HttpClient _httpClient; 
+    
+        public AudioDemuxJobClient(System.Net.Http.HttpClient httpClient)
+        {
+            _httpClient = httpClient; 
+        }
+    
+        public string BaseUrl 
+        {
+            get { return _baseUrl; }
+            set { _baseUrl = value; }
+        }
+    
+        partial void PrepareRequest(System.Net.Http.HttpClient request, string url);
+        partial void PrepareRequest(System.Net.Http.HttpClient request, System.Text.StringBuilder urlBuilder);
+        partial void ProcessResponse(System.Net.Http.HttpClient request, System.Net.Http.HttpResponseMessage response);
+    
+        /// <summary>Create a new job</summary>
+        /// <returns>OK</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<System.Guid> CreateNewAsync(AudioDemuxJobRequestModel input)
+        {
+            return CreateNewAsync(input, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Create a new job</summary>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>OK</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<System.Guid> CreateNewAsync(AudioDemuxJobRequestModel input, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl).Append("/api/AudioDemuxJob");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    PrepareRequest(client_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    PrepareRequest(client_, url_);
+    
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(input));
+                    content_.Headers.ContentType.MediaType = "application/json";
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        foreach (var item_ in response_.Content.Headers)
+                            headers_[item_.Key] = item_.Value;
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(System.Guid); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Guid>(responseData_);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", status_, responseData_, headers_, exception);
+                            }
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", status_, responseData_, headers_, null);
+                        }
+            
+                        return default(System.Guid);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "9.12.6284.27589")]
     public partial class AudioJobClient 
     {
         private string _baseUrl = "http://localhost:9000";
@@ -190,6 +291,86 @@ namespace DR.FFMpegClient
                         }
             
                         return default(System.Collections.ObjectModel.ObservableCollection<ClientHeartbeat>);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Removes client which hasn't send an heart in the last hour. Admin use only, do NOT use unless you know what you are doing.</summary>
+        /// <param name="maxAge">client max age in TimeSpan format, default value one hour.</param>
+        /// <returns>OK</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<int> PruneInactiveClientsAsync(string maxAge)
+        {
+            return PruneInactiveClientsAsync(maxAge, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Removes client which hasn't send an heart in the last hour. Admin use only, do NOT use unless you know what you are doing.</summary>
+        /// <param name="maxAge">client max age in TimeSpan format, default value one hour.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>OK</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<int> PruneInactiveClientsAsync(string maxAge, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl).Append("/admin/PruneClients?");
+            if (maxAge != null) urlBuilder_.Append("maxAge=").Append(System.Uri.EscapeDataString(maxAge.ToString())).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    PrepareRequest(client_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    PrepareRequest(client_, url_);
+    
+                    var content_ = new System.Net.Http.StringContent(string.Empty);
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        foreach (var item_ in response_.Content.Headers)
+                            headers_[item_.Key] = item_.Value;
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(int); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<int>(responseData_);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", status_, responseData_, headers_, exception);
+                            }
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", status_, responseData_, headers_, null);
+                        }
+            
+                        return default(int);
                     }
                     finally
                     {
@@ -1054,6 +1235,109 @@ namespace DR.FFMpegClient
     
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "8.11.6284.26855")]
+    public partial class AudioDemuxJobRequestModel : System.ComponentModel.INotifyPropertyChanged
+    {
+        private string _videoSourceFilename;
+        private string _destinationFilename;
+        private string _outputFolder;
+        private System.DateTime _needed;
+        private string _inpoint;
+    
+        [Newtonsoft.Json.JsonProperty("VideoSourceFilename", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string VideoSourceFilename
+        {
+            get { return _videoSourceFilename; }
+            set 
+            {
+                if (_videoSourceFilename != value)
+                {
+                    _videoSourceFilename = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("DestinationFilename", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string DestinationFilename
+        {
+            get { return _destinationFilename; }
+            set 
+            {
+                if (_destinationFilename != value)
+                {
+                    _destinationFilename = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("OutputFolder", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string OutputFolder
+        {
+            get { return _outputFolder; }
+            set 
+            {
+                if (_outputFolder != value)
+                {
+                    _outputFolder = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("Needed", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.DateTime Needed
+        {
+            get { return _needed; }
+            set 
+            {
+                if (_needed != value)
+                {
+                    _needed = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("Inpoint", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Inpoint
+        {
+            get { return _inpoint; }
+            set 
+            {
+                if (_inpoint != value)
+                {
+                    _inpoint = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static AudioDemuxJobRequestModel FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<AudioDemuxJobRequestModel>(data);
+        }
+    
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "8.11.6284.26855")]
     public partial class AudioJobRequestModel : System.ComponentModel.INotifyPropertyChanged
     {
         private System.Collections.ObjectModel.ObservableCollection<AudioDestinationFormat> _targets = new System.Collections.ObjectModel.ObservableCollection<AudioDestinationFormat>();
@@ -1749,6 +2033,7 @@ namespace DR.FFMpegClient
     public partial class FfmpegTaskModel : System.ComponentModel.INotifyPropertyChanged
     {
         private double? _progress;
+        private double? _verifyProgres;
         private FfmpegTaskModelState? _state;
         private System.DateTime? _heartbeat;
         private string _heartbeatMachine;
@@ -1765,6 +2050,20 @@ namespace DR.FFMpegClient
                 if (_progress != value)
                 {
                     _progress = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("VerifyProgres", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? VerifyProgres
+        {
+            get { return _verifyProgres; }
+            set 
+            {
+                if (_verifyProgres != value)
+                {
+                    _verifyProgres = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -1883,6 +2182,7 @@ namespace DR.FFMpegClient
         private bool _failed;
         private bool _done;
         private string _progress;
+        private string _verifyProgress;
     
         [Newtonsoft.Json.JsonProperty("Id", Required = Newtonsoft.Json.Required.Always)]
         public int Id
@@ -1956,6 +2256,20 @@ namespace DR.FFMpegClient
             }
         }
     
+        [Newtonsoft.Json.JsonProperty("VerifyProgress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string VerifyProgress
+        {
+            get { return _verifyProgress; }
+            set 
+            {
+                if (_verifyProgress != value)
+                {
+                    _verifyProgress = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
     
         public string ToJson() 
@@ -1987,6 +2301,7 @@ namespace DR.FFMpegClient
         private System.DateTime? _heartbeat;
         private string _heartbeatMachineName;
         private double? _progress;
+        private double? _verifyProgress;
         private int? _destinationDurationSeconds;
         private string _destinationFilename;
         private bool? _verifyOutput;
@@ -2099,6 +2414,20 @@ namespace DR.FFMpegClient
                 if (_progress != value)
                 {
                     _progress = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("VerifyProgress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? VerifyProgress
+        {
+            get { return _verifyProgress; }
+            set 
+            {
+                if (_verifyProgress != value)
+                {
+                    _verifyProgress = value; 
                     RaisePropertyChanged();
                 }
             }
