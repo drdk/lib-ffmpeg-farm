@@ -1,5 +1,7 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\NUnit3TestAdapter.3.9.0\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\packages\NUnit3TestAdapter.3.9.0\build\net35\NUnit3TestAdapter.props')" />
+  <Import Project="..\packages\Microsoft.NET.Test.Sdk.15.5.0\build\net45\Microsoft.Net.Test.Sdk.props" Condition="Exists('..\packages\Microsoft.NET.Test.Sdk.15.5.0\build\net45\Microsoft.Net.Test.Sdk.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -12,6 +14,8 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,27 +36,30 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MediaInfoDotNet, Version=0.7.79.40925, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath Condition="Exists('..\packages\')">..\packages\MediaInfoDotNet.0.7.79.40925\lib\net45\MediaInfoDotNet.dll</HintPath>
-      <HintPath Condition="Exists('..\..\..\..\src\packages\')">..\..\..\..\src\packages\MediaInfoDotNet.0.7.79.40925\lib\net45\MediaInfoDotNet.dll</HintPath>
+      <HintPath>$(SolutionDir)\packages\MediaInfoDotNet.0.7.79.40925\lib\net45\MediaInfoDotNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath Condition="Exists('..\packages\')">..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
-      <HintPath Condition="Exists('..\..\..\..\src\packages\')">..\..\..\..\src\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Microsoft.VisualStudio.CodeCoverage.Shim, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\Microsoft.CodeCoverage.1.0.3\lib\netstandard1.0\Microsoft.VisualStudio.CodeCoverage.Shim.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="nunit.framework, Version=3.2.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath Condition="Exists('..\packages\')">..\packages\NUnit.3.2.1\lib\net45\nunit.framework.dll</HintPath>
-      <HintPath Condition="Exists('..\..\..\..\src\packages\')">..\..\..\..\src\packages\NUnit.3.2.1\lib\net45\nunit.framework.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.9.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\System.ComponentModel.Annotations.4.4.1\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -79,12 +86,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FFMpegClient\FFMpegClient.csproj">
-      <Project>{0c475393-bb76-41b6-b1dc-640272a9c3e6}</Project>
-      <Name>FFMpegClient</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
@@ -95,6 +96,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FFMpegClient\FFMpegClient.csproj">
+      <Project>{0c475393-bb76-41b6-b1dc-640272a9c3e6}</Project>
+      <Name>FFMpegClient</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -104,13 +111,18 @@
   </Target>
   -->
   <Target Name="BeforeBuild">
-    <Copy Condition="Exists('..\packages\')" SourceFiles="..\packages\MediaInfoDotNet.0.7.79.40925\content\x64\MediaInfo.dll" DestinationFolder="$(ProjectDir)\x64">
+    <Copy SourceFiles="$(SolutionDir)\packages\MediaInfoDotNet.0.7.79.40925\content\x64\MediaInfo.dll" DestinationFolder="$(ProjectDir)\x64">
     </Copy>
-    <Copy Condition="Exists('..\packages\')" SourceFiles="..\packages\MediaInfoDotNet.0.7.79.40925\content\x86\MediaInfo.dll" DestinationFolder="$(ProjectDir)\x86">
-    </Copy>
-    <Copy Condition="Exists('..\..\..\..\src\packages\')" SourceFiles="..\..\..\..\src\packages\MediaInfoDotNet.0.7.79.40925\content\x64\MediaInfo.dll" DestinationFolder="$(ProjectDir)\x64">
-    </Copy>
-    <Copy Condition="Exists('..\..\..\..\src\packages\')" SourceFiles="..\..\..\..\src\packages\MediaInfoDotNet.0.7.79.40925\content\x86\MediaInfo.dll" DestinationFolder="$(ProjectDir)\x86">
+    <Copy SourceFiles="$(SolutionDir)\packages\MediaInfoDotNet.0.7.79.40925\content\x86\MediaInfo.dll" DestinationFolder="$(ProjectDir)\x86">
     </Copy>
   </Target>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.NET.Test.Sdk.15.5.0\build\net45\Microsoft.Net.Test.Sdk.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.NET.Test.Sdk.15.5.0\build\net45\Microsoft.Net.Test.Sdk.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.NET.Test.Sdk.15.5.0\build\net45\Microsoft.Net.Test.Sdk.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.NET.Test.Sdk.15.5.0\build\net45\Microsoft.Net.Test.Sdk.targets'))" />
+    <Error Condition="!Exists('..\packages\NUnit3TestAdapter.3.9.0\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit3TestAdapter.3.9.0\build\net35\NUnit3TestAdapter.props'))" />
+  </Target>
+  <Import Project="..\packages\Microsoft.NET.Test.Sdk.15.5.0\build\net45\Microsoft.Net.Test.Sdk.targets" Condition="Exists('..\packages\Microsoft.NET.Test.Sdk.15.5.0\build\net45\Microsoft.Net.Test.Sdk.targets')" />
 </Project>
