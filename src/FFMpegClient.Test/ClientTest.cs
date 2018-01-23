@@ -11,7 +11,8 @@ namespace DR.FFMpegClient.Test
     {
         private AudioJobClient _audioClient;
         private StatusClient _statusClient;
-        private const string ServiceUri = "http://ffmpegctrl01udv.net.dr.dk:9000";
+        private static string ServiceUri => Properties.Settings.Default.FFMPEGFarmUrl;
+        private static string TestRoot => Properties.Settings.Default.TestRoot;
         [SetUp]
         public void SetUp()
         {
@@ -38,9 +39,9 @@ namespace DR.FFMpegClient.Test
             var req = new AudioJobRequestModel
             {
                 //Targets = null,
-                Inpoint = "\\\\ondnas01\\MediaCache\\Test\\",
+                Inpoint = TestRoot,
                 SourceFilenames = new ObservableCollection<string> { "cliptest1.mov" },
-                OutputFolder = "\\\\ondnas01\\MediaCache\\Test\\FFMpg",
+                OutputFolder = TestRoot + @"\FFMpg",
                 DestinationFilenamePrefix = "",
                 Needed = DateTime.UtcNow
             };

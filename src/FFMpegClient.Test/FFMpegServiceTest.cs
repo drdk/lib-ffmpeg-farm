@@ -17,13 +17,13 @@ namespace DR.FFMpegClient.Test
         private AudioJobClient _audioJobClient;
         private MuxJobClient _muxJobClient;
         private StatusClient _statusClient;
-        private const string ffmpegFarmUrl = "http://ffmpegctrl01udv.net.dr.dk:9000"; // prod : "http://XXXXXX:9000"; dev: "http://ffmpegctrl01udv.net.dr.dk:9000"
-        private const string TestRoot = @"\\ondnas01\MediaCache\Test\";
-        private const string MuxTestVideoFile = TestRoot + "FFMpegMuxJobTest.mov";
-        private const string MuxTestAudioFile = TestRoot + "FFMpegMuxJobTest.wav";
-        private const string AudioTestFile = TestRoot + "FFMpegAudioJobTest.Wav";
-        private const string AudioIntroTestFile = TestRoot + "FFMpegAudioJobIntroTest.Wav";
-        private const string AudioOutroTestFile = TestRoot + "FFMpegAudioJobOutroTest.Wav";
+        private static string ffmpegFarmUrl => Properties.Settings.Default.FFMPEGFarmUrl;
+        private static string TestRoot => Properties.Settings.Default.TestRoot;
+        private string MuxTestVideoFile => TestRoot + "FFMpegMuxJobTest.mov";
+        private string MuxTestAudioFile => TestRoot + "FFMpegMuxJobTest.wav";
+        private string AudioTestFile => TestRoot + "FFMpegAudioJobTest.Wav";
+        private string AudioIntroTestFile => TestRoot + "FFMpegAudioJobIntroTest.Wav";
+        private string AudioOutroTestFile => TestRoot + "FFMpegAudioJobOutroTest.Wav";
         private string _sourceMuxTestVideoFile = TestRoot + "UnitTestFileMux-{0}.mov";
         private string _sourceMuxTestAudioFile = TestRoot + "UnitTestFileMux-{0}.wav";
         private string _sourceAudioTestFile = TestRoot + "UnitTestFileAudio-{0}.wav";

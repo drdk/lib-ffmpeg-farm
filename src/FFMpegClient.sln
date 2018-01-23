@@ -1,11 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFMpegClient", "FFMpegClient\FFMpegClient.csproj", "{0C475393-BB76-41B6-B1DC-640272A9C3E6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFMpegClient.Test", "FFMpegClient.Test\FFMpegClient.Test.csproj", "{FAE2C072-277A-4F09-8441-678D12EE9027}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{4EEB565F-87C2-401F-AF0E-C5035D68FD20}"
+	ProjectSection(SolutionItems) = preProject
+		..\gen-client.ps1 = ..\gen-client.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +29,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F1B0DD65-83CE-4D1D-8737-BA9B687147B5}
 	EndGlobalSection
 EndGlobal

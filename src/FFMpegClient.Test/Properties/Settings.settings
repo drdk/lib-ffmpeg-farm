@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="DR.FFMpegClient.Test.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="FFMPEGFarmUrl" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://ffmpegctrl01udv.net.dr.dk:9000</Value>
+    </Setting>
+    <Setting Name="TestRoot" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\\ondnas01\MediaCache\Test\</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
