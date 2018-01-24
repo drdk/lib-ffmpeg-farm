@@ -9,7 +9,7 @@
     <PackageProjectUrl>https://github.com/drdk/lib-ffmpeg-farm</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/drdk/lib-ffmpeg-farm/master/LICENSE</PackageLicenseUrl>
     <Copyright>DR (Danish Broadcasting Corporation)</Copyright>
-    <Description>A generic GET/PUT/POST/DELETE REST client.</Description>
+    <Description>Client for ffmpeg-farm</Description>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <AssemblyName>DR.FFMpegClient</AssemblyName>
     <RootNamespace>DR.FFMpegClient</RootNamespace>

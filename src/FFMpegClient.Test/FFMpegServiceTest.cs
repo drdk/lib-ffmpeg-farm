@@ -17,8 +17,8 @@ namespace DR.FFMpegClient.Test
         private AudioJobClient _audioJobClient;
         private MuxJobClient _muxJobClient;
         private StatusClient _statusClient;
-        private static string ffmpegFarmUrl => Properties.Settings.Default.FFMPEGFarmUrl;
-        private static string TestRoot => Properties.Settings.Default.TestRoot;
+        private static string ffmpegFarmUrl => Configuration.FFMPEGFarmUrl;
+        private static string TestRoot => Configuration.TestRoot;
         private string MuxTestVideoFile => TestRoot + "FFMpegMuxJobTest.mov";
         private string MuxTestAudioFile => TestRoot + "FFMpegMuxJobTest.wav";
         private string AudioTestFile => TestRoot + "FFMpegAudioJobTest.Wav";

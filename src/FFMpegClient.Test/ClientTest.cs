@@ -11,8 +11,8 @@ namespace DR.FFMpegClient.Test
     {
         private AudioJobClient _audioClient;
         private StatusClient _statusClient;
-        private static string ServiceUri => Properties.Settings.Default.FFMPEGFarmUrl;
-        private static string TestRoot => Properties.Settings.Default.TestRoot;
+        private static string ServiceUri => Configuration.FFMPEGFarmUrl;
+        private static string TestRoot => Configuration.TestRoot;
         [SetUp]
         public void SetUp()
         {
