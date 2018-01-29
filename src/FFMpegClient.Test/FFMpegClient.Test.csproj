@@ -33,9 +33,9 @@
   </ItemGroup>
 
   <Target Name="BeforeBuild">
-    <Copy SourceFiles="$(SolutionDir)\packages\MediaInfoDotNet.0.7.79.40925\content\x64\MediaInfo.dll" DestinationFolder="$(ProjectDir)\x64">
+    <Copy SourceFiles="$(NugetPackageFolders.Split(';')[0])\MediaInfoDotNet\0.7.79.40925\content\x64\MediaInfo.dll" DestinationFolder="$(ProjectDir)\x64">
     </Copy>
-    <Copy SourceFiles="$(SolutionDir)\packages\MediaInfoDotNet.0.7.79.40925\content\x86\MediaInfo.dll" DestinationFolder="$(ProjectDir)\x86">
+    <Copy SourceFiles="$(NugetPackageFolders.Split(';')[0])\MediaInfoDotNet\0.7.79.40925\content\x86\MediaInfo.dll" DestinationFolder="$(ProjectDir)\x86">
     </Copy>
   </Target>  
 
