@@ -1702,6 +1702,7 @@ namespace DR.FFMpegClient
         private string _videoSourceFilename;
         private string _subtitlesFilename;
         private string _destinationFilename;
+        private string _codecId;
         private string _outputFolder;
         private System.DateTime _needed;
         private string _inpoint;
@@ -1746,6 +1747,20 @@ namespace DR.FFMpegClient
                 if (_destinationFilename != value)
                 {
                     _destinationFilename = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("CodecId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CodecId
+        {
+            get { return _codecId; }
+            set 
+            {
+                if (_codecId != value)
+                {
+                    _codecId = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -2557,6 +2572,7 @@ namespace DR.FFMpegClient
     public partial class FFmpegTaskDto : System.ComponentModel.INotifyPropertyChanged
     {
         private int? _id;
+        private string _ffmpegExePath;
         private int? _ffmpegJobsId;
         private string _arguments;
         private FFmpegTaskDtoState? _state;
@@ -2578,6 +2594,20 @@ namespace DR.FFMpegClient
                 if (_id != value)
                 {
                     _id = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("FfmpegExePath", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string FfmpegExePath
+        {
+            get { return _ffmpegExePath; }
+            set 
+            {
+                if (_ffmpegExePath != value)
+                {
+                    _ffmpegExePath = value; 
                     RaisePropertyChanged();
                 }
             }
