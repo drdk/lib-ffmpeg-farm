@@ -1,14 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <IncludeSource>true</IncludeSource>
+    <IncludeSymbols>true</IncludeSymbols>
     <Company>DR (Danish Broadcasting Corporation)</Company>
     <Authors>DR TU</Authors>
     <RepositoryUrl></RepositoryUrl>
     <PackageProjectUrl>https://github.com/drdk/lib-ffmpeg-farm</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/drdk/lib-ffmpeg-farm/master/LICENSE</PackageLicenseUrl>
     <Copyright>DR (Danish Broadcasting Corporation)</Copyright>
+    <VersionPrefix>1.0.1</VersionPrefix>
+    <VersionSuffix>localhost</VersionSuffix>
     <Description>Client for ffmpeg-farm</Description>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <AssemblyName>DR.FFMpegClient</AssemblyName>
