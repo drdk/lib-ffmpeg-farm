@@ -129,7 +129,7 @@ namespace DR.FFMpegClient.Test
             CleanUp();
         }
 
-        [Test, Explicit]
+        [Test]
         public async Task StatusTest()
         {
             var sw = new Stopwatch();
@@ -146,7 +146,7 @@ namespace DR.FFMpegClient.Test
         //    Assert.That(_wfsService.GetWorkingNodes("WorkingMachines").Length, Is.GreaterThanOrEqualTo(1));
         //}
 
-        [Test, Explicit]
+        [Test]
         public async Task AudioJobTest()
         {
             File.Copy(AudioTestFile, _sourceAudioTestFile);
@@ -197,7 +197,7 @@ namespace DR.FFMpegClient.Test
             }
         }
 
-        [Test, Explicit]
+        [Test]
         public async Task AudioIntroOutroJobTest()
         {
             File.Copy(AudioTestFile, _sourceAudioTestFile);
@@ -265,7 +265,7 @@ namespace DR.FFMpegClient.Test
             }
         }
 
-        [Test, Explicit]
+        [Test]
         public async Task MuxingJobTest()
         {
             File.Copy(MuxTestAudioFile, _sourceMuxTestAudioFile);
