@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
- 
+
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
     <AssemblyName>DR.FFMpegClient.Test</AssemblyName>
-    <RootNamespace>DR.FFMpegClient.Test</RootNamespace>
+    <RootNamespace>DR.FFMpegClient.Test</RootNamespace>    
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,18 +22,13 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="x64\MediaInfo.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="x86\MediaInfo.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
-  <Target Name="BeforeBuild">
-    <Copy SourceFiles="$(NugetPackageFolders.Split(';')[0])\MediaInfoDotNet\0.7.79.40925\content\x64\MediaInfo.dll" DestinationFolder="$(ProjectDir)\x64">
+  <Target Name="MediaInfoCopy" AfterTargets="Build">
+    <Message Text="Copying MediaInfo" Importance="high"  />
+    <Copy SourceFiles="$(NugetPackageFolders.Split(';')[0])\MediaInfoDotNet\0.7.79.40925\content\x64\MediaInfo.dll" DestinationFolder="$(OutputPath)\x64">
     </Copy>
-    <Copy SourceFiles="$(NugetPackageFolders.Split(';')[0])\MediaInfoDotNet\0.7.79.40925\content\x86\MediaInfo.dll" DestinationFolder="$(ProjectDir)\x86">
+    <Copy SourceFiles="$(NugetPackageFolders.Split(';')[0])\MediaInfoDotNet\0.7.79.40925\content\x86\MediaInfo.dll" DestinationFolder="$(OutputPath)\x86">
     </Copy>
   </Target>  
 
