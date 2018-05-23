@@ -6,8 +6,6 @@
     <RootNamespace>DR.FFMpegClient.Test</RootNamespace>
   </PropertyGroup>
 
-  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
-
   <ItemGroup>
     <PackageReference Include="MediaInfoDotNet" Version="0.7.79.40925" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.0" />
