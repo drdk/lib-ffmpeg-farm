@@ -1677,7 +1677,7 @@ namespace DR.FFMpegClient
         }
     
         /// <summary>Indicates witch stream from the input file to use as left stereo channel. Default is 1.
-        /// If left and right streams are the same we assume the stream is stereo already.</summary>
+        /// If left and right streams are the same we assume that stream number is stereo already.</summary>
         [Newtonsoft.Json.JsonProperty("LeftStream", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? LeftStream
         {
@@ -1692,8 +1692,8 @@ namespace DR.FFMpegClient
             }
         }
     
-        /// <summary>Indicates witch stream from the input file to use as left stereo channel. Default is one.
-        /// If left and right streams are the same we assume the stream is stereo already.</summary>
+        /// <summary>Indicates witch stream from the input file to use as right stereo channel. Default is 1.
+        /// If left and right streams are the same we assume that stream number is stereo already.</summary>
         [Newtonsoft.Json.JsonProperty("RightStream", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? RightStream
         {
@@ -2039,6 +2039,8 @@ namespace DR.FFMpegClient
         private string _subtitlesFilename;
         private string _destinationFilename;
         private string _codecId;
+        private int? _leftStream;
+        private int? _rightStream;
         private string _outputFolder;
         private System.DateTime _needed;
         private string _inpoint;
@@ -2097,6 +2099,38 @@ namespace DR.FFMpegClient
                 if (_codecId != value)
                 {
                     _codecId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        /// <summary>Indicates witch stream from the input file to use as left stereo channel. Default is 1.
+        /// If left and right streams are the same we assume that stream number is stereo already.</summary>
+        [Newtonsoft.Json.JsonProperty("LeftStream", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LeftStream
+        {
+            get { return _leftStream; }
+            set 
+            {
+                if (_leftStream != value)
+                {
+                    _leftStream = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        /// <summary>Indicates witch stream from the input file to use as right stereo channel. Default is 1.
+        /// If left and right streams are the same we assume that stream number is stereo already.</summary>
+        [Newtonsoft.Json.JsonProperty("RightStream", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RightStream
+        {
+            get { return _rightStream; }
+            set 
+            {
+                if (_rightStream != value)
+                {
+                    _rightStream = value; 
                     RaisePropertyChanged();
                 }
             }
