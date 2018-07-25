@@ -15,6 +15,7 @@ namespace DR.FFMpegClient.Test
     public sealed class FFMpegServiceTest
     {
         private AudioJobClient _audioJobClient;
+        private LoudnessJobClient _loudnessJobClient;
         private MuxJobClient _muxJobClient;
         private StatusClient _statusClient;
         private static string ffmpegFarmUrl => Configuration.FFMPEGFarmUrl;
@@ -22,15 +23,18 @@ namespace DR.FFMpegClient.Test
         private string MuxTestVideoFile => TestRoot + "FFMpegMuxJobTest.mov";
         private string MuxTestAudioFile => TestRoot + "FFMpegMuxJobTest.wav";
         private string AudioTestFile => TestRoot + "FFMpegAudioJobTest.Wav";
+        private string AudioLoudnessTestFile => TestRoot + "FFMpegAudioLoudnessJobTest.Wav";
         private string AudioIntroTestFile => TestRoot + "FFMpegAudioJobIntroTest.Wav";
         private string AudioOutroTestFile => TestRoot + "FFMpegAudioJobOutroTest.Wav";
         private string _sourceMuxTestVideoFile = TestRoot + "UnitTestFileMux-{0}.mov";
         private string _sourceMuxTestAudioFile = TestRoot + "UnitTestFileMux-{0}.wav";
         private string _sourceAudioTestFile = TestRoot + "UnitTestFileAudio-{0}.wav";
+        private string _sourceAudioLoudnessTestFile = TestRoot + "UnitTestFileAudioLoudness-{0}.wav";
         private string _sourceAudioIntroFile = TestRoot + "UnitTestFileAudioIntro-{0}.wav";
         private string _sourceAudioOutroFile = TestRoot + "UnitTestFileAudioOutro-{0}.wav";
         private string _targetTestPath = TestRoot + "UnitTest-{0}-{1}";
         private string _targetFileAudioPrefix = "UnitTest-Audio-{0}";
+        private string _targetFileAudioLoudnessPrefix = "UnitTest-AudioLoudness-{0}";
         private string _targetFileAudioIntroOutroPrefix = "UnitTest-Audio-IntroOutro-{0}";
         private string _targetFileMux = "UnitTest-Mux-{0}.mov";
 
@@ -72,15 +76,18 @@ namespace DR.FFMpegClient.Test
         {
             var httpClient = new HttpClient();
             _audioJobClient = new AudioJobClient(httpClient) { BaseUrl = ffmpegFarmUrl };
+            _loudnessJobClient = new LoudnessJobClient(httpClient) { BaseUrl = ffmpegFarmUrl };
             _muxJobClient = new MuxJobClient(httpClient) { BaseUrl = ffmpegFarmUrl };
             _statusClient = new StatusClient(httpClient) { BaseUrl = ffmpegFarmUrl };
             _sourceMuxTestVideoFile = string.Format(_sourceMuxTestVideoFile, Environment.MachineName);
             _sourceMuxTestAudioFile = string.Format(_sourceMuxTestAudioFile, Environment.MachineName);
             _sourceAudioTestFile = string.Format(_sourceAudioTestFile, Environment.MachineName);
+            _sourceAudioLoudnessTestFile = string.Format(_sourceAudioLoudnessTestFile, Environment.MachineName);
             _sourceAudioIntroFile = string.Format(_sourceAudioIntroFile, Environment.MachineName);
             _sourceAudioOutroFile = string.Format(_sourceAudioOutroFile, Environment.MachineName);
             _targetTestPath = string.Format(_targetTestPath, Environment.MachineName, DateTime.Now.Ticks);
             _targetFileAudioPrefix = string.Format(_targetFileAudioPrefix, Environment.MachineName);
+            _targetFileAudioLoudnessPrefix = string.Format(_targetFileAudioLoudnessPrefix, Environment.MachineName);
             _targetFileAudioIntroOutroPrefix = string.Format(_targetFileAudioIntroOutroPrefix, Environment.MachineName);
             _targetFileMux = string.Format(_targetFileMux, Environment.MachineName);
 
@@ -91,6 +98,9 @@ namespace DR.FFMpegClient.Test
                 throw new Exception("Test file missing " + MuxTestAudioFile);
 
             if (!File.Exists(AudioTestFile))
+                throw new Exception("Test file missing " + AudioTestFile);
+
+            if (!File.Exists(AudioLoudnessTestFile))
                 throw new Exception("Test file missing " + AudioTestFile);
 
             if (!File.Exists(AudioIntroTestFile))
@@ -112,6 +122,9 @@ namespace DR.FFMpegClient.Test
 
             if (File.Exists(_sourceAudioTestFile))
                 File.Delete(_sourceAudioTestFile);
+
+            if (File.Exists(_sourceAudioLoudnessTestFile))
+                File.Delete(_sourceAudioLoudnessTestFile);
 
             if (File.Exists(_sourceAudioIntroFile))
                 File.Delete(_sourceAudioIntroFile);
@@ -189,6 +202,57 @@ namespace DR.FFMpegClient.Test
             Console.WriteLine($"Job done, time : {sw.ElapsedMilliseconds} ms ({maxCount})");
             sw.Stop();
             Assert.That(job.Tasks.Count, Is.EqualTo(request.Targets.Count));
+            foreach (var target in job.Tasks)
+            {
+                string fileFullPath = Path.Combine(_targetTestPath, target.DestinationFilename);
+                Console.WriteLine($"Checking file: {fileFullPath}");
+                Assert.That(File.Exists(fileFullPath), Is.True, $"Expected to find transcoded file @ {fileFullPath}");
+            }
+        }
+                
+        [Test]
+        public async Task AudioLoudnessJobTest()
+        {
+            File.Copy(AudioLoudnessTestFile, _sourceAudioLoudnessTestFile);
+            Directory.CreateDirectory(_targetTestPath);
+            
+            var request = new LoudnessJobRequestModel()
+            {
+                AudioPresetFile = "Ossian_Px_7threads_ny.sts",
+                DestinationFilename = _targetFileAudioLoudnessPrefix,
+                Inpoint = "0",
+                Needed = DateTime.UtcNow,
+                OutputFolder = _targetTestPath,
+                SourceFilenames = new ObservableCollection<string>( new[] { _sourceAudioLoudnessTestFile })
+            };
+
+            var jobGuid = await _loudnessJobClient.CreateNewAsync(request);
+
+            bool done;
+            int maxCount = 240;
+            Stopwatch sw = new Stopwatch();
+            Console.WriteLine("Starting job {0}", jobGuid);
+            sw.Start();
+            FfmpegJobModel job;
+            do
+            {
+                job = await _statusClient.GetAsync(jobGuid);
+                var runningTask = job.Tasks.FirstOrDefault(t => t.State == FfmpegTaskModelState.InProgress);
+                Console.WriteLine($"Jobstatus : {job.State}, time: {sw.ElapsedMilliseconds} ms, filename: {runningTask?.DestinationFilename}, {runningTask?.Progress:0.##} %");
+                if (job.State == FfmpegJobModelState.Failed || job.State == FfmpegJobModelState.Canceled || job.State == FfmpegJobModelState.Unknown)
+                    throw new Exception($"Error running job. job state: {job.State}");
+                done = job.State == FfmpegJobModelState.Done;
+                if (!done)
+                {
+                    Thread.Sleep(1000);
+                }
+
+            } while (!done && maxCount-- > 0);
+
+            Assert.That(done, Is.True);
+            Console.WriteLine($"Job done, time : {sw.ElapsedMilliseconds} ms ({maxCount})");
+            sw.Stop();
+            //Assert.That(job.Tasks.Count, Is.EqualTo(request.Targets.Count));
             foreach (var target in job.Tasks)
             {
                 string fileFullPath = Path.Combine(_targetTestPath, target.DestinationFilename);

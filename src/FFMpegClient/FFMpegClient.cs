@@ -944,6 +944,137 @@ namespace DR.FFMpegClient
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.12.16.0 (NJsonSchema v9.10.19.0 (Newtonsoft.Json v9.0.0.0))")]
+    public partial class LoudnessJobClient 
+    {
+        private string _baseUrl = "http://localhost:9000";
+        private System.Net.Http.HttpClient _httpClient;
+        private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
+    
+        public LoudnessJobClient(System.Net.Http.HttpClient httpClient)
+        {
+            _httpClient = httpClient; 
+    		_settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
+            {
+                var settings = new Newtonsoft.Json.JsonSerializerSettings();
+                UpdateJsonSerializerSettings(settings);
+                return settings;
+            });
+    	}
+    
+        public string BaseUrl 
+        {
+            get { return _baseUrl; }
+            set { _baseUrl = value; }
+        }
+    
+        partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
+        partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, string url);
+        partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
+        partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
+    
+        /// <summary>Create a new job</summary>
+        /// <returns>OK</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<System.Guid> CreateNewAsync(LoudnessJobRequestModel input)
+        {
+            return CreateNewAsync(input, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Create a new job</summary>
+        /// <returns>OK</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<System.Guid> CreateNewAsync(LoudnessJobRequestModel input, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/LoudnessJob");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(input, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        foreach (var item_ in response_.Content.Headers)
+                            headers_[item_.Key] = item_.Value;
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(System.Guid); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Guid>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", status_, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", status_, responseData_, headers_, null);
+                        }
+            
+                        return default(System.Guid);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+    	private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
+    	{
+    		if (value is System.Enum)
+    		{
+    			string name = System.Enum.GetName(value.GetType(), value);
+    			if (name != null)
+    			{
+    				var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
+    				if (field != null)
+    				{
+    					var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
+    						as System.Runtime.Serialization.EnumMemberAttribute;
+    					if (attribute != null)
+    					{
+    						return attribute.Value;
+    					}
+    				}
+    			}
+    		}
+    
+    		return System.Convert.ToString(value, cultureInfo);
+    	}
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.12.16.0 (NJsonSchema v9.10.19.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class MuxJobClient 
     {
         private string _baseUrl = "http://localhost:9000";
@@ -2282,6 +2413,125 @@ namespace DR.FFMpegClient
         public static WorkerStatus FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<WorkerStatus>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.19.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class LoudnessJobRequestModel : System.ComponentModel.INotifyPropertyChanged
+    {
+        private string _audioPresetFile;
+        private string _destinationFilename;
+        private System.Collections.ObjectModel.ObservableCollection<string> _sourceFilenames = new System.Collections.ObjectModel.ObservableCollection<string>();
+        private string _outputFolder;
+        private System.DateTime _needed;
+        private string _inpoint;
+    
+        [Newtonsoft.Json.JsonProperty("AudioPresetFile", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string AudioPresetFile
+        {
+            get { return _audioPresetFile; }
+            set 
+            {
+                if (_audioPresetFile != value)
+                {
+                    _audioPresetFile = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("DestinationFilename", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string DestinationFilename
+        {
+            get { return _destinationFilename; }
+            set 
+            {
+                if (_destinationFilename != value)
+                {
+                    _destinationFilename = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("SourceFilenames", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.ObjectModel.ObservableCollection<string> SourceFilenames
+        {
+            get { return _sourceFilenames; }
+            set 
+            {
+                if (_sourceFilenames != value)
+                {
+                    _sourceFilenames = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("OutputFolder", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string OutputFolder
+        {
+            get { return _outputFolder; }
+            set 
+            {
+                if (_outputFolder != value)
+                {
+                    _outputFolder = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("Needed", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.DateTime Needed
+        {
+            get { return _needed; }
+            set 
+            {
+                if (_needed != value)
+                {
+                    _needed = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("Inpoint", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Inpoint
+        {
+            get { return _inpoint; }
+            set 
+            {
+                if (_inpoint != value)
+                {
+                    _inpoint = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static LoudnessJobRequestModel FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LoudnessJobRequestModel>(data);
         }
     
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
