@@ -34,7 +34,7 @@ namespace DR.FFMpegClient.Test
         private string _sourceAudioOutroFile = TestRoot + "UnitTestFileAudioOutro-{0}.wav";
         private string _targetTestPath = TestRoot + "UnitTest-{0}-{1}";
         private string _targetFileAudioPrefix = "UnitTest-Audio-{0}";
-        private string _targetFileAudioLoudnessPrefix = "UnitTest-AudioLoudness-{0}";
+        private string _targetFileAudioLoudnessPrefix = "UnitTest-AudioLoudness-{0}.wav";
         private string _targetFileAudioIntroOutroPrefix = "UnitTest-Audio-IntroOutro-{0}";
         private string _targetFileMux = "UnitTest-Mux-{0}.mov";
 
