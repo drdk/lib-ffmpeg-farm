@@ -1335,6 +1335,137 @@ namespace DR.FFMpegClient
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.12.16.0 (NJsonSchema v9.10.19.0 (Newtonsoft.Json v9.0.0.0))")]
+    public partial class ScrubbingJobClient 
+    {
+        private string _baseUrl = "http://localhost:9000";
+        private System.Net.Http.HttpClient _httpClient;
+        private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
+    
+        public ScrubbingJobClient(System.Net.Http.HttpClient httpClient)
+        {
+            _httpClient = httpClient; 
+    		_settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
+            {
+                var settings = new Newtonsoft.Json.JsonSerializerSettings();
+                UpdateJsonSerializerSettings(settings);
+                return settings;
+            });
+    	}
+    
+        public string BaseUrl 
+        {
+            get { return _baseUrl; }
+            set { _baseUrl = value; }
+        }
+    
+        partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
+        partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, string url);
+        partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
+        partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
+    
+        /// <summary>Create a new job</summary>
+        /// <returns>OK</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<System.Guid> CreateNewAsync(ScrubbingJobRequestModel input)
+        {
+            return CreateNewAsync(input, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Create a new job</summary>
+        /// <returns>OK</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<System.Guid> CreateNewAsync(ScrubbingJobRequestModel input, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ScrubbingJob");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(input, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        foreach (var item_ in response_.Content.Headers)
+                            headers_[item_.Key] = item_.Value;
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(System.Guid); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Guid>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", status_, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", status_, responseData_, headers_, null);
+                        }
+            
+                        return default(System.Guid);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+    	private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
+    	{
+    		if (value is System.Enum)
+    		{
+    			string name = System.Enum.GetName(value.GetType(), value);
+    			if (name != null)
+    			{
+    				var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
+    				if (field != null)
+    				{
+    					var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
+    						as System.Runtime.Serialization.EnumMemberAttribute;
+    					if (attribute != null)
+    					{
+    						return attribute.Value;
+    					}
+    				}
+    			}
+    		}
+    
+    		return System.Convert.ToString(value, cultureInfo);
+    	}
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.12.16.0 (NJsonSchema v9.10.19.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class StatusClient 
     {
         private string _baseUrl = "http://localhost:9000";
@@ -2815,6 +2946,157 @@ namespace DR.FFMpegClient
         public static ScreenshotJobRequestModel FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ScreenshotJobRequestModel>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.19.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class ScrubbingJobRequestModel : System.ComponentModel.INotifyPropertyChanged
+    {
+        private string _sourceFilename;
+        private int _firstThumbnailOffsetInSeconds;
+        private int _maxSecondsBetweenThumbnails;
+        private System.Collections.ObjectModel.ObservableCollection<string> _thumbnailResolutions = new System.Collections.ObjectModel.ObservableCollection<string>();
+        private System.Collections.ObjectModel.ObservableCollection<string> _spriteSheetSizes = new System.Collections.ObjectModel.ObservableCollection<string>();
+        private string _outputFolder;
+        private System.DateTime _needed;
+        private string _inpoint;
+    
+        [Newtonsoft.Json.JsonProperty("SourceFilename", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string SourceFilename
+        {
+            get { return _sourceFilename; }
+            set 
+            {
+                if (_sourceFilename != value)
+                {
+                    _sourceFilename = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("FirstThumbnailOffsetInSeconds", Required = Newtonsoft.Json.Required.Always)]
+        public int FirstThumbnailOffsetInSeconds
+        {
+            get { return _firstThumbnailOffsetInSeconds; }
+            set 
+            {
+                if (_firstThumbnailOffsetInSeconds != value)
+                {
+                    _firstThumbnailOffsetInSeconds = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("MaxSecondsBetweenThumbnails", Required = Newtonsoft.Json.Required.Always)]
+        public int MaxSecondsBetweenThumbnails
+        {
+            get { return _maxSecondsBetweenThumbnails; }
+            set 
+            {
+                if (_maxSecondsBetweenThumbnails != value)
+                {
+                    _maxSecondsBetweenThumbnails = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        /// <summary>Each resolution must be in the format w:h example 160:80</summary>
+        [Newtonsoft.Json.JsonProperty("ThumbnailResolutions", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.ObjectModel.ObservableCollection<string> ThumbnailResolutions
+        {
+            get { return _thumbnailResolutions; }
+            set 
+            {
+                if (_thumbnailResolutions != value)
+                {
+                    _thumbnailResolutions = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        /// <summary>Allowed values are "FiveByFive" and "TenByTen".</summary>
+        [Newtonsoft.Json.JsonProperty("SpriteSheetSizes", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.ObjectModel.ObservableCollection<string> SpriteSheetSizes
+        {
+            get { return _spriteSheetSizes; }
+            set 
+            {
+                if (_spriteSheetSizes != value)
+                {
+                    _spriteSheetSizes = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("OutputFolder", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string OutputFolder
+        {
+            get { return _outputFolder; }
+            set 
+            {
+                if (_outputFolder != value)
+                {
+                    _outputFolder = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("Needed", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.DateTime Needed
+        {
+            get { return _needed; }
+            set 
+            {
+                if (_needed != value)
+                {
+                    _needed = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("Inpoint", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Inpoint
+        {
+            get { return _inpoint; }
+            set 
+            {
+                if (_inpoint != value)
+                {
+                    _inpoint = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static ScrubbingJobRequestModel FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ScrubbingJobRequestModel>(data);
         }
     
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;

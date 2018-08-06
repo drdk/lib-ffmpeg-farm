@@ -13,7 +13,7 @@
     <PackageProjectUrl>https://github.com/drdk/lib-ffmpeg-farm</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/drdk/lib-ffmpeg-farm/master/LICENSE</PackageLicenseUrl>
     <Copyright>DR (Danish Broadcasting Corporation)</Copyright>
-    <VersionPrefix>1.0.5</VersionPrefix>
+    <VersionPrefix>1.0.6</VersionPrefix>
     <VersionSuffix>localhost</VersionSuffix>
     <Description>Client for ffmpeg-farm</Description>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
