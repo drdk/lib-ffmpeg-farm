@@ -48,8 +48,8 @@ namespace DR.FFMpegClient.Test
             var jobTask = _audioClient.CreateNewAsync(req);
             var agg = Assert.Throws<AggregateException>(() =>
                 jobTask.Wait());
-            var innerException = agg.InnerException as SwaggerException;
-            Console.WriteLine(innerException.Response);
+            var innerException = agg.InnerException;
+            Console.WriteLine(innerException?.Message);
 
         }
     }

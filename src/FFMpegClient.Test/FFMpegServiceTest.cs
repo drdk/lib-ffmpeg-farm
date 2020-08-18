@@ -11,7 +11,7 @@ using NUnit.Framework;
 
 namespace DR.FFMpegClient.Test
 {
-    [TestFixture]
+    [TestFixture, Ignore("Test material is deleted")]
     public sealed class FFMpegServiceTest
     {
         private AudioJobClient _audioJobClient;
